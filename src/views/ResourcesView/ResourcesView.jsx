@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { PageHeader, Checkbox, Tag } from 'antd';
 import { Filters } from '../../components/organisms';
@@ -27,12 +27,18 @@ const data = [
   },
 ];
 
-const ResourcesView = ({ filters }) => {
+const ResourcesView = ({ filters, getInitData, changeContext }) => {
+  console.log(filters);
   return (
-    <div>
+    <div className="resource-view-wrapper">
       <PageHeader title={'Spatii'} />
-      <Filters {...filters} />
+      <Filters
+        selectedContext={filters.selectedContext}
+        contexts={filters.contexts}
+        changeContext={changeContext}
+      />
       <Table columns={getColumns('pod')} data={data} />
+      <div></div>
     </div>
   );
 };
@@ -42,6 +48,7 @@ ResourcesView.propTypes = {
     selectedContext: PropTypes.shape({}),
     contexts: PropTypes.arrayOf(PropTypes.shape({})),
   }),
+  getInitData: PropTypes.func,
 };
 
 export default ResourcesView;

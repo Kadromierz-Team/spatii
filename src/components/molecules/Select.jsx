@@ -13,6 +13,7 @@ const Select = ({
   value,
   loading = false,
   children,
+  options,
 }) => (
   <AntSelect
     mode={mode}
@@ -26,6 +27,7 @@ const Select = ({
     value={value}
     loading={loading}
     style={{ width: '100%' }}
+    options={options}
   >
     {children}
   </AntSelect>
@@ -42,6 +44,7 @@ Select.propTypes = {
   value: PropTypes.string,
   loading: PropTypes.bool,
   children: PropTypes.node,
+  options: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
 export default Select;
