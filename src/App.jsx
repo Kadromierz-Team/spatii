@@ -4,10 +4,9 @@ import { Provider } from 'react-redux';
 import './App.global.scss';
 import store from './store';
 import ResourcesView from './views/ResourcesView/ResourcesView.redux.js';
+import { getInitData } from './actions';
 
-setTimeout(() => {
-  store.dispatch({ type: 'RESET_STATE' });
-});
+store.dispatch(getInitData());
 
 export default function App() {
   return (
