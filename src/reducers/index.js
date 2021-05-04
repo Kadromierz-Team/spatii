@@ -1,8 +1,7 @@
-const rootReducer = (state, action) => {
-  let newState;
-  if (action.type === 'RESET_STATE') {
-    newState = { test: true, testArray: [1, 2, 3, 4] };
-  }
-  return newState;
-};
+import { combineReducers } from 'redux';
+import filters from './filters';
+
+const rootReducer = combineReducers({
+  filters,
+});
 export default rootReducer;
