@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import './App.global.scss';
 import store from './store';
-import ResourcesView from './components/ResourcesView/ResourcesView';
+import ResourcesView from './views/ResourcesView/ResourcesView.redux.js';
 
 setTimeout(() => {
   store.dispatch({ type: 'RESET_STATE' });

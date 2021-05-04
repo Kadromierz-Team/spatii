@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Select, SelectOption, Button } from '../atoms';
+import { Select, SelectOption, Button } from '../molecules';
 
 import './Filters.scss';
 
@@ -25,7 +25,7 @@ const resourceTypes = [
 ];
 
 const Filters = ({ changeContext, changeNamespaces, changeResourceTypes }) => (
-  <div className="filters" style={{ display: 'flex' }}>
+  <div className="filters">
     <Select placeholder="Select context" value={contexts[0].key}>
       {contexts.map((context) => (
         <Select.Option
