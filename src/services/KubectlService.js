@@ -32,7 +32,7 @@ class KubectlService {
   async getNamespaceResources(namespace, resource) {
     const args = ['get', resource, `-n=${namespace}`, '-o=name'];
     const results = await this._execute(args);
-    return results.split('\n').map((item) => item.split('/')[0]);
+    return results.split('\n').map((item) => item.split('/')[1]);
   }
 
   async getContextResources() {
