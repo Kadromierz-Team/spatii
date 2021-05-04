@@ -12,16 +12,27 @@ class KubectlService {
     await this._execute(args);
   }
 
+  async describeResource(resourceName, resourceType, namespace) {
+    const args = [
+      'get',
+      resourceType,
+      resourceName,
+      `-n=${namespace}`,
+      '-o=json',
+    ];
+    const result = await this._execute(args);
+    return JSON.parse(result);
+  }
+
   async getCurrentContext() {
     const args = ['config', 'current-context'];
     return this._execute(args);
   }
 
   async getNamespaceResources(namespace, resource) {
-    const args = ['get', resource, `-n=${namespace}`, '-o=json'];
+    const args = ['get', resource, `-n=${namespace}`, '-o=name'];
     const results = await this._execute(args);
-    const parsedResources = JSON.parse(results);
-    return parsedResources.items;
+    return results.split('\n').map((item) => item.split('/')[1]);
   }
 
   async getContextResources() {
@@ -49,7 +60,7 @@ class KubectlService {
 
   async _execute(args) {
     try {
-      const { stdout } = execa('kubectl', args);
+      const { stdout } = await execa('kubectl', args);
       return stdout;
     } catch (error) {
       console.log(`KubectlService Failed: ${error.shortMessage}`);
