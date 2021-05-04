@@ -4,36 +4,38 @@ import { Select, SelectOption, Button } from '../molecules';
 
 import './Filters.scss';
 
-const namespaces = [
-  {
-    key: 'def',
-  },
-];
-
-const resourceTypes = [
-  {
-    key: 'ghi',
-  },
-];
-
 const Filters = ({
   changeContext,
   changeNamespaces,
   changeResourceTypes,
   contexts,
   selectedContext,
+  namespaces,
+  selectedNamespaces,
+  resourceTypes,
+  selectedResourceTypes,
 }) => {
-  const contextOptions = contexts.map((context) => ({
-    value: context,
-    label: context,
-  }));
-
   console.log({
     changeContext,
     changeResourceTypes,
     contexts,
+    namespaces,
     selectedContext,
   });
+  const contextOptions = contexts.map((context) => ({
+    value: context,
+    label: context,
+  }));
+  const namespacesOptions = namespaces.map((namespace) => ({
+    value: namespace,
+    label: namespace,
+  }));
+  const resourceTypesOptions = resourceTypes.map((resourceType) => ({
+    value: resourceType,
+    label: resourceType,
+  }));
+
+  console.log({ selectedResourceTypes });
 
   return (
     <div className="filters">
@@ -46,34 +48,23 @@ const Filters = ({
 
       <Select
         placeholder="Select namespaces"
-        value={[namespaces[0].key]}
+        value={selectedNamespaces}
         mode="multiple"
-      >
-        {namespaces.map((namespace) => (
-          <Select.Option
-            value={namespace.key}
-            label={namespace.key}
-            key={namespace.key}
-          >
-            {namespace.key}
-          </Select.Option>
-        ))}
-      </Select>
+        options={namespacesOptions}
+        onChange={(namespaces) => {
+          changeNamespaces(namespaces);
+        }}
+      />
       <Select
         placeholder="Select resource types"
-        value={[resourceTypes[0].key]}
+        value={selectedResourceTypes}
         mode="multiple"
-      >
-        {resourceTypes.map((resourceType) => (
-          <Select.Option
-            value={resourceType.key}
-            label={resourceType.key}
-            key={resourceType.key}
-          >
-            {resourceType.key}
-          </Select.Option>
-        ))}
-      </Select>
+        options={resourceTypesOptions}
+        onChange={(namespaces) => {
+          changeResourceTypes(namespaces);
+        }}
+      />
+
       <Button text="Logs" type="primary" onClick={() => {}} />
     </div>
   );

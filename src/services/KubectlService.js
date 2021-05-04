@@ -49,7 +49,7 @@ class KubectlService {
 
   async _execute(args) {
     try {
-      const { stdout } = execa('kubectl', args);
+      const { stdout } = await execa('kubectl', args);
       return stdout;
     } catch (error) {
       console.log(`KubectlService Failed: ${error.shortMessage}`);

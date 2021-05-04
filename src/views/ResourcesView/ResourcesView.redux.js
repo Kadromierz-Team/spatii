@@ -1,6 +1,11 @@
 import { connect } from 'react-redux';
 import ResourcesView from './ResourcesView';
-import { getInitData, changeContext } from '../../actions';
+import {
+  getInitData,
+  changeContext,
+  changeNamespaces,
+  changeResourceTypes,
+} from '../../actions';
 
 const mapStateToProps = (state) => ({
   filters: state.filters,
@@ -9,6 +14,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   getInitData,
   changeContext,
+  changeNamespaces,
+  changeResourceTypes,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResourcesView);

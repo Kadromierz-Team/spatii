@@ -27,15 +27,22 @@ const data = [
   },
 ];
 
-const ResourcesView = ({ filters, getInitData, changeContext }) => {
+const ResourcesView = ({
+  filters,
+  getInitData,
+  changeContext,
+  changeNamespaces,
+  changeResourceTypes,
+}) => {
   console.log(filters);
   return (
     <div className="resource-view-wrapper">
       <PageHeader title={'Spatii'} />
       <Filters
-        selectedContext={filters.selectedContext}
-        contexts={filters.contexts}
+        {...filters}
         changeContext={changeContext}
+        changeNamespaces={changeNamespaces}
+        changeResourceTypes={changeResourceTypes}
       />
       <Table columns={getColumns('pod')} data={data} />
       <div></div>
@@ -49,6 +56,8 @@ ResourcesView.propTypes = {
     contexts: PropTypes.arrayOf(PropTypes.shape({})),
   }),
   getInitData: PropTypes.func,
+  changeNamespaces: PropTypes.func,
+  changeContext: PropTypes.func,
 };
 
 export default ResourcesView;

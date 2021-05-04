@@ -1,11 +1,19 @@
 import {
   GET_CONTEXT_LIST_SUCCESSFUL,
   CHANGE_CONTEXT,
+  GET_NAMESPACE_LIST_SUCCESSFUL,
+  CHANGE_NAMESPACES,
+  GET_RESOURCE_TYPES_LIST_SUCCESSFUL,
+  CHANGE_RESOURCE_TYPES,
 } from '../constants/actionTypes';
 
 const initState = {
   contexts: [],
   selectedContext: null,
+  namespaces: [],
+  selectedNamespaces: [],
+  resourceTypes: [],
+  selectedResourceTypes: [],
 };
 
 const reducer = (state = initState, action) => {
@@ -17,10 +25,29 @@ const reducer = (state = initState, action) => {
         selectedContext: action.payload[0] || null,
       };
     case CHANGE_CONTEXT:
-      console.log('CHANGE_CONTEXT', action);
       return {
         ...state,
         selectedContext: action.payload,
+      };
+    case GET_NAMESPACE_LIST_SUCCESSFUL:
+      return {
+        ...state,
+        namespaces: action.payload,
+      };
+    case CHANGE_NAMESPACES:
+      return {
+        ...state,
+        selectedNamespaces: action.payload,
+      };
+    case GET_RESOURCE_TYPES_LIST_SUCCESSFUL:
+      return {
+        ...state,
+        resourceTypes: action.payload,
+      };
+    case CHANGE_RESOURCE_TYPES:
+      return {
+        ...state,
+        selectedResourceTypes: action.payload,
       };
     default:
       return state;
