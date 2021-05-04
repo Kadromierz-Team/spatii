@@ -1,26 +1,72 @@
 module.exports = {
-  extends: 'erb',
-  rules: {
-    // A temporary hack related to IDE not resolving correct package.json
-    'import/no-extraneous-dependencies': 'off',
-  },
+  parser: 'babel-eslint',
+  extends: ['standard', 'standard-react', 'airbnb', 'prettier'],
+  plugins: ['babel', 'react', 'promise'],
   parserOptions: {
-    ecmaVersion: 2020,
+    ecmaVersion: 11,
     sourceType: 'module',
-    project: './tsconfig.json',
-    tsconfigRootDir: __dirname,
-    createDefaultProgram: true,
+    ecmaFeatures: {
+      jsx: true,
+    },
   },
-  settings: {
-    'import/resolver': {
-      // See https://github.com/benmosher/eslint-plugin-import/issues/1396#issuecomment-575727774 for line below
-      node: {},
-      webpack: {
-        config: require.resolve('./.erb/configs/webpack.config.eslint.js'),
+  env: {
+    browser: true,
+  },
+  globals: {
+    __DEV__: false,
+    __TEST__: false,
+    __PROD__: false,
+    __COVERAGE__: false,
+    describe: false,
+    it: false,
+    test: false,
+    before: false,
+    after: false,
+    expect: false,
+    beforeEach: false,
+    beforeAll: false,
+    jest: false,
+    win: false,
+    Raven: false,
+  },
+  rules: {
+    strict: 0,
+    'import/no-named-as-default': 0,
+    'import/no-named-as-default-member': 0,
+    'key-spacing': 0,
+    'max-len': [2, 120, 2, { ignoreComments: true }],
+    'object-curly-spacing': [2, 'always'],
+    'import/extensions': 0,
+    'import/no-extraneous-dependencies': [
+      'error',
+      {
+        devDependencies: true,
       },
-    },
-    'import/parsers': {
-      '@typescript-eslint/parser': ['.ts', '.tsx'],
-    },
+    ],
+    'react/no-array-index-key': 0,
+    'react/require-default-props': 0,
+    'no-plusplus': 0,
+    quotes: ['error', 'single'],
+    'comma-dangle': [2, 'always-multiline'],
+    'no-restricted-syntax': 0,
+    'no-param-reassign': ['error', { props: false }],
+    radix: 0,
+    'array-callback-return': 1,
+    'no-bitwise': 0,
+    'one-var': 0,
+    'no-console': [2, { allow: ['warn', 'error'] }],
+    'jsx-a11y/click-events-have-key-events': 0,
+    'prefer-destructuring': ['error', { object: true, array: false }],
+    'jsx-a11y/label-has-for': 0,
+    'import/prefer-default-export': 0,
+    'jsx-a11y/anchor-is-valid': [
+      'error',
+      {
+        components: ['Link'],
+        specialLink: ['to'],
+        aspects: ['noHref', 'invalidHref', 'preferButton'],
+      },
+    ],
+    'no-new': 0,
   },
 };
