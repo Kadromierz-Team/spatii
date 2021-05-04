@@ -5,6 +5,8 @@ import {
   changeContext,
   changeNamespaces,
   changeResourceTypes,
+  getResourceDescription,
+  clearResourceDescription,
 } from '../../actions';
 
 const mapStateToProps = (state) => ({
@@ -16,6 +18,8 @@ const mapDispatchToProps = {
   changeContext,
   changeNamespaces,
   changeResourceTypes,
+  getResourceDescription,
+  clearResourceDescription,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResourcesView);

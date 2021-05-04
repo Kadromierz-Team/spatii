@@ -2,6 +2,8 @@ import { exec } from 'child_process';
 import * as AT from '../constants/actionTypes';
 import KubectlService from '../services/KubectlService';
 
+const kubectlService = new KubectlService();
+
 export const getInitData = () => async (dispatch, getState) => {
   dispatch(getContexts());
   await dispatch(getCurrentContext());
@@ -10,9 +12,8 @@ export const getInitData = () => async (dispatch, getState) => {
 };
 
 export const getNamespaces = () => async (dispatch, getState) => {
-  const service = new KubectlService();
   const { selectedContext } = getState().filters;
-  const namespaces = await service.getNamespaces(selectedContext);
+  const namespaces = await kubectlService.getNamespaces(selectedContext);
 
   dispatch({
     type: AT.GET_NAMESPACE_LIST_SUCCESSFUL,
@@ -20,10 +21,28 @@ export const getNamespaces = () => async (dispatch, getState) => {
   });
 };
 
+export const getResourceDescription = (resourceName) => async (
+  dispatch,
+  getState
+) => {
+  const { selectedNamespaces, selectedResourceTypes } = getState().filters;
+  const resourceType = selectedResourceTypes[0];
+  const namespace = selectedNamespaces[0];
+  const resourceObject = await kubectlService.describeResource(
+    resourceName,
+    resourceType,
+    namespace
+  );
+
+  dispatch({
+    type: AT.GET_RESOURCE_DESCRIPTION_SUCCESSFUL,
+    payload: resourceObject,
+  });
+};
+
 export const getResourceTypes = () => async (dispatch, getState) => {
-  const service = new KubectlService();
   const { selectedContext } = getState().filters;
-  const resourceTypes = await service.getContextResources();
+  const resourceTypes = await kubectlService.getContextResources();
 
   dispatch({
     type: AT.GET_RESOURCE_TYPES_LIST_SUCCESSFUL,
@@ -47,9 +66,7 @@ export const getContexts = () => (dispatch, getState) => {
 };
 
 export const getCurrentContext = () => async (dispatch, getState) => {
-  const service = new KubectlService();
-
-  const context = await service.getCurrentContext();
+  const context = await kubectlService.getCurrentContext();
 
   dispatch({
     type: AT.CHANGE_CONTEXT,
@@ -58,9 +75,7 @@ export const getCurrentContext = () => async (dispatch, getState) => {
 };
 
 export const changeContext = (context) => async (dispatch, getState) => {
-  const service = new KubectlService();
-
-  await service.changeContext(context);
+  await kubectlService.changeContext(context);
   await dispatch({
     type: AT.CHANGE_CONTEXT,
     payload: context,
@@ -68,6 +83,10 @@ export const changeContext = (context) => async (dispatch, getState) => {
   dispatch(getNamespaces());
   dispatch(getResourceTypes());
 };
+
+export const clearResourceDescription = () => ({
+  type: AT.CLEAR_RESOURCE_DESCRIPTION,
+});
 
 export const changeNamespaces = (namespaces) => ({
   type: AT.CHANGE_NAMESPACES,

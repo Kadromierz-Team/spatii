@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { PageHeader, Checkbox, Tag, Modal } from 'antd';
-import { Filters } from '../../components/organisms';
+import { PageHeader, Checkbox, Tag } from 'antd';
+import { Filters, ModalJsonView } from '../../components/organisms';
 import { Table, Button } from '../../components/molecules';
 import { getColumns } from './utils';
 
 const data = [
   {
     key: '1',
-    name: 'POD1',
+    name: 'staging-core-drone-555f578766-89xvd',
     isSelected: false,
     imageTag: '00000000',
     status: 'OK',
-    options: 'POD1',
+    options: 'staging-core-drone-555f578766-89xvd',
   },
   {
     key: '2',
@@ -36,23 +36,29 @@ const ResourcesView = ({
   changeContext,
   changeNamespaces,
   changeResourceTypes,
+  getResourceDescription,
+  clearResourceDescription,
 }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [resourceName, setResourceName] = useState(null);
   const showModal = (value) => {
-    setIsModalVisible(true);
     setResourceName(value);
+    getResourceDescription(value);
+    setIsModalVisible(true);
   };
 
   const handleOk = () => {
     setIsModalVisible(false);
+    clearResourceDescription();
     setResourceName(null);
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
+    clearResourceDescription();
     setResourceName(null);
   };
+
   console.log(filters);
   return (
     <div className="resource-view-wrapper">
@@ -64,16 +70,13 @@ const ResourcesView = ({
         changeResourceTypes={changeResourceTypes}
       />
       <Table columns={getColumns('pod', showModal)} data={data} />
-      <Modal
-        title="Basic Modal"
+      <ModalJsonView
         visible={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      >
-        <p>{resourceName}</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-      </Modal>
+        handleOk={handleOk}
+        handleCancel={handleCancel}
+        title={resourceName}
+        jsonObject={filters.resourceDescription}
+      />
       <div></div>
     </div>
   );
