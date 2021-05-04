@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import './App.global.css';
+import './App.global.scss';
 import store from './store';
 import ResourcesView from './components/ResourcesView/ResourcesView';
 

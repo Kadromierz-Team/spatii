@@ -1,5 +1,6 @@
 import React from 'react';
 import { PageHeader, Select } from 'antd';
+import './ResourceView.scss';
 
 const { Option } = Select;
 
