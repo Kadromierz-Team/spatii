@@ -5,3 +5,7 @@
 @import './views/ResourcesView/ResourcesView.scss';
 @import './views/LogsView/LogsView';
 @import './components/molecules/LogBox/LogBox';
+
+body {
+  background-color: #111111;
+}
