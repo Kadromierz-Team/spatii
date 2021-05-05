@@ -15,9 +15,10 @@ const ResourcesView = ({
   getResourceDescription,
   clearResourceDescription,
   changeSelectedResources,
+  selectedResources,
 }) => {
   const formattedResources = resources
-    .filter((resource) => resource.name && resource.status)
+    .filter((resource) => resource && resource.name && resource.status)
     .map((resource) => {
       const splitImage = resource.image?.split(':');
 
@@ -56,6 +57,7 @@ const ResourcesView = ({
     },
     getCheckboxProps: (record) => ({
       name: record.name,
+      checked: selectedResources.includes(record.name),
     }),
   };
 
@@ -65,8 +67,6 @@ const ResourcesView = ({
     text: status,
     value: status,
   }));
-
-  console.log({ allStatuses });
 
   return (
     <div className="resource-view-wrapper">

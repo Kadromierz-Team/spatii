@@ -29,23 +29,27 @@ class KubectlService {
     return this._execute(args);
   }
 
-  async getNamespaceResources(namespace, resource) {
-    const args = [
+  async getNamespaceResources(namespaces, resource) {
+    const argsArray = namespaces.map((namespace) => [
       'get',
       resource,
       `-n=${namespace}`,
       `-o=jsonpath='{range .items[*]}{.metadata.name}{"\\t"}{.spec.containers[0].image}{"\\t"}{.status.phase}{"\\n"}{end}'`,
-    ];
-    const results = await this._execute(args);
+    ]);
+    const resultsPromises = argsArray.map((args) => this._execute(args));
+    const results = await Promise.all(resultsPromises);
 
-    return results.split('\n').map((item) => {
-      const [name, image, status] = item.split('\t');
+    return results.flatMap((singleResult) => {
+      return singleResult.split('\n').map((item) => {
+        const formattedItem = item?.replace("'", '');
+        const [name, image, status] = formattedItem?.split('\t');
 
-      return {
-        name: name.replace("'", ''),
-        image,
-        status,
-      };
+        return {
+          name,
+          image,
+          status,
+        };
+      });
     });
   }
 
