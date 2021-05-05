@@ -20,7 +20,7 @@ const ResourcesView = ({
   changeRefreshInterval,
   getResources,
   toggleRefresh,
-  startLogs
+  startLogs,
 }) => {
   console.log([selectedResources]);
   const formattedResources = resources
@@ -59,7 +59,10 @@ const ResourcesView = ({
   const rowSelection = {
     type: 'checkbox',
     onChange: (selectedRowKeys, selectedRows) => {
-      const keys = selectedRows.map((row) => `${row.namespace}_${row.name}`);
+      const keys = selectedRows.map((row) => ({
+        namespace: row.namespace,
+        name: row.name,
+      }));
       changeSelectedResources(keys);
     },
     getCheckboxProps: (record) => ({
