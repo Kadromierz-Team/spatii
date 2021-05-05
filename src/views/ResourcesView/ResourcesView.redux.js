@@ -22,6 +22,7 @@ const mapStateToProps = (state) => ({
   resources: state.resources,
   selectedResources: state.selectedResources,
   refreshing: state.refreshing,
+  showLoader: state.showLoader,
 });
 
 const mapDispatchToProps = {

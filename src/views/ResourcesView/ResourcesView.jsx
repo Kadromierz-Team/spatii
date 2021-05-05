@@ -23,6 +23,7 @@ const ResourcesView = ({
   toggleRefresh,
   startLogs,
   deletePod,
+  showLoader,
 }) => {
   const formattedResources = resources
     .filter(
@@ -124,6 +125,7 @@ const ResourcesView = ({
         )}
         data={formattedResources}
         rowSelection={rowSelection}
+        loading={showLoader}
       />
       <ModalJsonView
         visible={isModalVisible}

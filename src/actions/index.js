@@ -74,12 +74,21 @@ export const getCurrentContext = () => async (dispatch, getState) => {
   });
 };
 
-export const getResources = () => async (dispatch, getState) => {
+export const getResources = (showLoader = true) => async (
+  dispatch,
+  getState
+) => {
   const service = new KubectlService();
   const { selectedResourceTypes, selectedNamespaces } = getState().filters;
 
   if (selectedResourceTypes.length === 0 || selectedNamespaces.length === 0) {
     return;
+  }
+
+  if (showLoader) {
+    dispatch({
+      type: AT.SHOW_LOADER,
+    });
   }
 
   const resources = await service.getNamespaceResources(
@@ -154,6 +163,9 @@ export const toggleRefresh = (value) => ({
 });
 
 export const deletePod = (name, namespace) => async (dispatch, getState) => {
+  dispatch({
+    type: AT.SHOW_LOADER
+  })
   const service = new KubectlService();
   await service.deletePod(name, namespace);
   await dispatch(getResources());

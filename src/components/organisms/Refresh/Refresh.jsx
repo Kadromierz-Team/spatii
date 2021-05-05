@@ -23,11 +23,13 @@ const Refresh = ({
     if (isEnabled) {
       const id = setInterval(() => {
         console.log('GET RESOURCES!!!');
-        getResources();
+        getResources(false);
       }, refreshInterval * 1000);
 
       setIntervalId(id);
     }
+
+    return clearInterval(intervalId);
   }, [isEnabled, refreshInterval]);
 
   return (

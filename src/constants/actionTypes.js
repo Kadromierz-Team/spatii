@@ -20,3 +20,5 @@ export const CLEAR_LOGS = 'CLEAR_LOGS';
 export const PAUSE_LOGS = 'PAUSE_LOGS';
 export const RESUME_LOGS = 'RESUME_LOGS';
 export const RESET_LOGS = 'RESET_LOGS';
+
+export const SHOW_LOADER = 'SHOW_LOADER';
