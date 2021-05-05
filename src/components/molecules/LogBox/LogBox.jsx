@@ -12,7 +12,7 @@ class LogBox extends React.Component {
   }
 
   scrollToBottom = () => {
-     if(this.messagesEndRef) this.messagesEndRef.scrollIntoView({ behavior: 'smooth' })
+     if(this.messagesEndRef) this.messagesEndRef.scrollIntoView()
   }
 
   render() {
