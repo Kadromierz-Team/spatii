@@ -13,7 +13,7 @@ const getStatusColor = (value) => {
   }
 };
 
-const defaultColumns = [
+const defaultColumns = (showDescribe) => [
   {
     title: '',
     dataIndex: 'isSelected',
@@ -40,8 +40,12 @@ const defaultColumns = [
     key: 'options',
     render: (value) => (
       <div>
-        <Button type="link" text="Describe" />
-        <Button type="link" text="Deploy" />
+        <Button
+          type="link"
+          text="Describe"
+          onClick={() => showDescribe(value)}
+        />
+        <Button type="link" text="Deploy" onClick={() => showDescribe(value)} />
       </div>
     ),
     order: 100,
@@ -59,8 +63,9 @@ const resourceColumns = {
   ],
 };
 
-export const getColumns = (resourceType) => {
-  return [...defaultColumns, ...(resourceColumns[resourceType] || [])].sort(
-    (a, b) => a.order - b.order
-  );
+export const getColumns = (resourceType, describeFunc) => {
+  return [
+    ...defaultColumns(describeFunc),
+    ...(resourceColumns[resourceType] || []),
+  ].sort((a, b) => a.order - b.order);
 };

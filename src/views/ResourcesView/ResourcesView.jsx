@@ -1,31 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { PageHeader, Checkbox, Tag } from 'antd';
-import { Filters } from '../../components/organisms';
+import { Filters, ModalJsonView } from '../../components/organisms';
 import { Table, Button } from '../../components/molecules';
 import { getColumns } from './utils';
-
-const data = [
-  {
-    key: '1',
-    name: 'POD1',
-    isSelected: false,
-    imageTag: '00000000',
-    status: 'OK',
-  },
-  {
-    key: '2',
-    name: 'POD2',
-    isSelected: true,
-    status: 'NOT OK',
-  },
-  {
-    key: '3',
-    name: 'POD3',
-    isSelected: true,
-    status: 'NO INFO',
-  },
-];
 
 const ResourcesView = ({
   filters,
@@ -34,8 +12,9 @@ const ResourcesView = ({
   changeNamespaces,
   changeResourceTypes,
   resources,
+  getResourceDescription,
+  clearResourceDescription,
 }) => {
-  console.log({ resources });
   const formattedResources = resources
     .filter((resource) => resource.name && resource.status)
     .map((resource) => {
@@ -46,6 +25,26 @@ const ResourcesView = ({
         imageTag: splitImage ? splitImage[splitImage.length - 1] : undefined,
       };
     });
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [resourceName, setResourceName] = useState(null);
+  const showModal = (value) => {
+    setResourceName(value);
+    getResourceDescription(value);
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+    clearResourceDescription();
+    setResourceName(null);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+    clearResourceDescription();
+    setResourceName(null);
+  };
+
   return (
     <div className="resource-view-wrapper">
       <PageHeader title={'Spatii'} />
@@ -56,6 +55,13 @@ const ResourcesView = ({
         changeResourceTypes={changeResourceTypes}
       />
       <Table columns={getColumns('pod')} data={formattedResources} />
+      <ModalJsonView
+        visible={isModalVisible}
+        handleOk={handleOk}
+        handleCancel={handleCancel}
+        title={resourceName}
+        jsonObject={filters.resourceDescription}
+      />
     </div>
   );
 };

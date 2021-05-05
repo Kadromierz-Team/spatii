@@ -5,6 +5,8 @@ import {
   CHANGE_NAMESPACES,
   GET_RESOURCE_TYPES_LIST_SUCCESSFUL,
   CHANGE_RESOURCE_TYPES,
+  GET_RESOURCE_DESCRIPTION_SUCCESSFUL,
+  CLEAR_RESOURCE_DESCRIPTION,
 } from '../constants/actionTypes';
 
 const initState = {
@@ -14,6 +16,7 @@ const initState = {
   selectedNamespaces: [],
   resourceTypes: [],
   selectedResourceTypes: [],
+  resourceDescription: null,
 };
 
 const reducer = (state = initState, action) => {
@@ -43,6 +46,16 @@ const reducer = (state = initState, action) => {
       return {
         ...state,
         resourceTypes: action.payload,
+      };
+    case GET_RESOURCE_DESCRIPTION_SUCCESSFUL:
+      return {
+        ...state,
+        resourceDescription: action.payload,
+      };
+    case CLEAR_RESOURCE_DESCRIPTION:
+      return {
+        ...state,
+        resourceDescription: null,
       };
     case CHANGE_RESOURCE_TYPES:
       console.log({ action });
