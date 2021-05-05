@@ -14,8 +14,7 @@ const ResourcesView = ({
   resources,
   getResourceDescription,
   clearResourceDescription,
-  selectResource,
-  unselectResource,
+  changeSelectedResources,
 }) => {
   const formattedResources = resources
     .filter((resource) => resource.name && resource.status)
@@ -27,6 +26,7 @@ const ResourcesView = ({
         imageTag: splitImage ? splitImage[splitImage.length - 1] : undefined,
         options: resource.name,
         isSelected: resource.name,
+        key: resource.name,
       };
     });
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -49,6 +49,16 @@ const ResourcesView = ({
     setResourceName(null);
   };
 
+  const rowSelection = {
+    type: 'checkbox',
+    onChange: (selectedRowKeys, selectedRows) => {
+      changeSelectedResources(selectedRowKeys);
+    },
+    getCheckboxProps: (record) => ({
+      name: record.name,
+    }),
+  };
+
   return (
     <div className="resource-view-wrapper">
       <PageHeader title={'Spatii'} />
@@ -59,8 +69,9 @@ const ResourcesView = ({
         changeResourceTypes={changeResourceTypes}
       />
       <Table
-        columns={getColumns('pod', showModal, selectResource, unselectResource)}
+        columns={getColumns('pod', showModal)}
         data={formattedResources}
+        rowSelection={rowSelection}
       />
       <ModalJsonView
         visible={isModalVisible}

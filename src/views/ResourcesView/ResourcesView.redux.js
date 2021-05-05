@@ -7,8 +7,7 @@ import {
   changeResourceTypes,
   getResourceDescription,
   clearResourceDescription,
-  selectResource,
-  unselectResource,
+  changeSelectedResources,
 } from '../../actions';
 
 const mapStateToProps = (state) => ({
@@ -23,8 +22,7 @@ const mapDispatchToProps = {
   changeResourceTypes,
   getResourceDescription,
   clearResourceDescription,
-  selectResource,
-  unselectResource,
+  changeSelectedResources,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResourcesView);

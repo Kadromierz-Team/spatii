@@ -2,9 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Table as AntTable } from 'antd';
 
-const Table = ({ data, columns }) => (
-  <AntTable dataSource={data} columns={columns} />
-);
+const Table = ({ data, ...props }) => <AntTable dataSource={data} {...props} />;
 
 Table.propTypes = {
   data: PropTypes.arrayOf(

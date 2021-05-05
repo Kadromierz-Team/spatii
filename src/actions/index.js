@@ -140,12 +140,7 @@ export const changeResourceTypes = (resourceTypes) => async (
   }
 };
 
-export const selectResource = (resource) => ({
-  type: AT.SELECT_RESOURCE,
-  payload: resource,
-});
-
-export const unselectResource = (resource) => ({
-  type: AT.UNSELECT_RESOURCE,
-  payload: resource,
+export const changeSelectedResources = (resources) => ({
+  type: AT.CHANGE_SELECTED_RESOURCE,
+  payload: resources,
 });

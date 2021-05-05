@@ -1,5 +1,5 @@
 import React from 'react';
-import { PageHeader, Checkbox, Tag } from 'antd';
+import { PageHeader, Tag } from 'antd';
 import { Button } from '../../components/molecules';
 
 const getStatusColor = (value) => {
@@ -13,21 +13,7 @@ const getStatusColor = (value) => {
   }
 };
 
-const defaultColumns = (showDescribe, selectResource, deselectResource) => [
-  {
-    title: '',
-    dataIndex: 'isSelected',
-    key: 'isSelected',
-    render: (value) => (
-      <Checkbox
-        checked={value}
-        onChange={() => {
-          value ? deselectResource(value) : selectResource(value);
-        }}
-      />
-    ),
-    order: 0,
-  },
+const defaultColumns = (showDescribe) => [
   {
     title: 'Name',
     dataIndex: 'name',
@@ -77,7 +63,7 @@ export const getColumns = (
   deselectResource
 ) => {
   return [
-    ...defaultColumns(describeFunc, selectResource, deselectResource),
+    ...defaultColumns(describeFunc),
     ...(resourceColumns[resourceType] || []),
   ].sort((a, b) => a.order - b.order);
 };
