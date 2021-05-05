@@ -28,7 +28,6 @@ class LogBox extends React.Component {
           </div>
     );
   }
-
 }
 
 

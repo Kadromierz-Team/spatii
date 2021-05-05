@@ -16,7 +16,6 @@ export default function App() {
         <Switch>
           <Route path="/logs" component={LogsView} />
           <Route path="/" component={ResourcesView} />
-
         </Switch>
       </Router>
     </Provider>

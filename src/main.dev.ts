@@ -93,7 +93,6 @@ const createWindow = async () => {
     }
 
     mainWindow.webContents.on('found-in-page', (event, result) => {
-      // if (result.finalUpdate) mainWindow.webContents.stopFindInPage('clearSelection')
     })
 
     ipcMain.on('search-text', (event, arg) => {
@@ -101,15 +100,6 @@ const createWindow = async () => {
       mainWindow.webContents.findInPage(arg);
     });
 
-    // globalShortcut.register('CmdorCtrl+F', () => {
-    //   mainWindow.webContents.send('find_request', '');
-    //   mainWindow.webContents.findInPage('current/',{findNext: true});
-    // });
-    //
-    // setTimeout(()=>{
-    //   console.log('BAM!');
-    //   mainWindow.webContents.findInPage('current/');
-    // },7000)
 
   });
 
