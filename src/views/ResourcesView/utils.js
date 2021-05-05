@@ -19,6 +19,9 @@ const defaultColumns = (showDescribe) => [
     dataIndex: 'name',
     key: 'name',
     order: 1,
+    sorter: {
+      compare: (a, b) => (a.name > b.name ? 1 : -1),
+    },
   },
   {
     title: 'Status',
@@ -26,6 +29,9 @@ const defaultColumns = (showDescribe) => [
     key: 'status',
     render: (value) => <Tag color={getStatusColor(value)}>{value}</Tag>,
     order: 2,
+    sorter: {
+      compare: (a, b) => (a.status > b.status ? 1 : -1),
+    },
   },
   {
     title: 'Options',
@@ -52,6 +58,9 @@ const resourceColumns = {
       key: 'imageTag',
       dataIndex: 'imageTag',
       order: 3,
+      sorter: {
+        compare: (a, b) => (a.imageTag > b.imageTag ? 1 : -1),
+      },
     },
   ],
 };
