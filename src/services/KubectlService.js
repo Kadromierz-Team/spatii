@@ -38,6 +38,13 @@ class KubectlService {
       '{.status.phase}',
       '{.status.containerStatuses[0].restartCount}',
       '{.status.containerStatuses[0].state.running.startedAt}',
+      '{.status.readyReplicas}',
+      '{.status.availableReplicas}',
+      '{.spec.minReplicas}',
+      '{.spec.maxReplicas}',
+      '{.status.currentReplicas}',
+      '{.spec.targetCPUUtilizationPercentage}',
+      '{.status.currentCPUUtilizationPercentage}',
     ];
     const argsArray = namespaces.map((namespace) => ({
       args: [
@@ -68,6 +75,13 @@ class KubectlService {
           status,
           restartCount,
           startedAt,
+          readyReplicas,
+          availableReplicas,
+          minReplicas,
+          maxReplicas,
+          currentReplicas,
+          targetCPUUtilizationPercentage,
+          currentCPUUtilizationPercentage,
         ] = formattedItem?.split('\t');
         const restartParsed = parseInt(restartCount);
 
@@ -80,6 +94,13 @@ class KubectlService {
           restartCount: isNaN(restartParsed) ? 0 : restartParsed,
           startedAt: startedAt ? moment(startedAt).fromNow() : 'N/A',
           startedAtTimestamp: startedAt ? new Date(startedAt).getTime() : 0,
+          readyReplicas,
+          availableReplicas,
+          minReplicas,
+          maxReplicas,
+          currentReplicas,
+          targetCPUUtilizationPercentage,
+          currentCPUUtilizationPercentage,
         };
       });
     });

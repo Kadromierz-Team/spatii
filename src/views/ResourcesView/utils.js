@@ -2,7 +2,6 @@ import React from 'react';
 import { PageHeader, Tag } from 'antd';
 import { Button, CopyContent } from '../../components/molecules';
 
-
 const getStatusColor = (value) => {
   switch (value) {
     case 'Running':
@@ -23,19 +22,7 @@ const defaultColumns = (showDescribe, allStatuses, deletePod) => [
     sorter: {
       compare: (a, b) => (a.name > b.name ? 1 : -1),
     },
-    render:name=><CopyContent value={name}>{name}</CopyContent>,
-  },
-  {
-    title: 'Status',
-    dataIndex: 'status',
-    key: 'status',
-    render: (value) => <Tag color={getStatusColor(value)}>{value}</Tag>,
-    order: 2,
-    sorter: {
-      compare: (a, b) => (a.status > b.status ? 1 : -1),
-    },
-    filters: allStatuses,
-    onFilter: (value, record) => record.status.includes(value),
+    render: (name) => <CopyContent value={name}>{name}</CopyContent>,
   },
 
   {
@@ -70,8 +57,20 @@ const defaultColumns = (showDescribe, allStatuses, deletePod) => [
   },
 ];
 
-const resourceColumns = {
+const getResourceColumns = (allStatuses) => ({
   pods: [
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+      render: (value) => <Tag color={getStatusColor(value)}>{value}</Tag>,
+      order: 2,
+      sorter: {
+        compare: (a, b) => (a.status > b.status ? 1 : -1),
+      },
+      filters: allStatuses,
+      onFilter: (value, record) => record.status.includes(value),
+    },
     {
       title: 'Image tag',
       key: 'imageTag',
@@ -80,7 +79,7 @@ const resourceColumns = {
       sorter: {
         compare: (a, b) => (a.imageTag > b.imageTag ? 1 : -1),
       },
-      render:tag=><CopyContent value={tag}>{tag}</CopyContent>,
+      render: (tag) => <CopyContent value={tag}>{tag}</CopyContent>,
     },
     {
       title: 'Restart count',
@@ -102,7 +101,73 @@ const resourceColumns = {
       },
     },
   ],
-};
+  deployments: [
+    {
+      title: 'Replicas',
+      key: 'replicas',
+      dataIndex: 'replicas',
+      order: 6,
+      sorter: {
+        compare: (a, b) => (a.replicas > b.replicas ? 1 : -1),
+      },
+    },
+  ],
+  horizontalpodautoscalers: [
+    {
+      title: 'Current CPU %',
+      key: 'currentCPUUtilizationPercentage',
+      dataIndex: 'currentCPUUtilizationPercentage',
+      order: 7,
+      sorter: {
+        compare: (a, b) =>
+          a.currentCPUUtilizationPercentage > b.currentCPUUtilizationPercentage
+            ? 1
+            : -1,
+      },
+      render: (value) => `${value}%`,
+    },
+    {
+      title: 'Target CPU %',
+      key: 'targetCPUUtilizationPercentage',
+      dataIndex: 'targetCPUUtilizationPercentage',
+      order: 8,
+      sorter: {
+        compare: (a, b) =>
+          a.targetCPUUtilizationPercentage > b.targetCPUUtilizationPercentage
+            ? 1
+            : -1,
+      },
+      render: (value) => `${value}%`,
+    },
+    {
+      title: 'Min. replicas',
+      key: 'minReplicas',
+      dataIndex: 'minReplicas',
+      order: 9,
+      sorter: {
+        compare: (a, b) => (a.minReplicas > b.minReplicas ? 1 : -1),
+      },
+    },
+    {
+      title: 'Max. replicas',
+      key: 'maxReplicas',
+      dataIndex: 'maxReplicas',
+      order: 10,
+      sorter: {
+        compare: (a, b) => (a.maxReplicas > b.maxReplicas ? 1 : -1),
+      },
+    },
+    {
+      title: 'Current replicas',
+      key: 'currentReplicas',
+      dataIndex: 'currentReplicas',
+      order: 11,
+      sorter: {
+        compare: (a, b) => (a.currentReplicas > b.currentReplicas ? 1 : -1),
+      },
+    },
+  ],
+});
 
 const namespaceColumns = [
   {
@@ -129,16 +194,21 @@ const resourceTypesColumns = [
 ];
 
 export const getColumns = (
-  resourceType,
+  resourceTypes,
   describeFunc,
   allStatuses,
   selectedNamespaces,
   selectedResourceTypes,
   deletePod
 ) => {
+  const resourceColumns = getResourceColumns(allStatuses);
+  const relevantResourceColumns = resourceTypes.reduce((result, type) => {
+    return [...result, ...(resourceColumns[type] || [])];
+  }, []);
+
   return [
     ...defaultColumns(describeFunc, allStatuses, deletePod),
-    ...(resourceColumns[resourceType] || []),
+    ...relevantResourceColumns,
     ...(selectedNamespaces.length > 1 ? namespaceColumns : []),
     ...(selectedResourceTypes.length > 1 ? resourceTypesColumns : []),
   ].sort((a, b) => a.order - b.order);

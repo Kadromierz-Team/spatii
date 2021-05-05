@@ -38,6 +38,15 @@ const ResourcesView = ({
         imageTag: splitImage ? splitImage[splitImage.length - 1] : undefined,
         options: resource.name,
         key: resource.name,
+        replicas: `${resource.readyReplicas || 0}/${
+          resource.availableReplicas || 0
+        }`,
+        minReplicas: resource.minReplicas,
+        maxReplicas: resource.maxReplicas,
+        currentReplicas: resource.currentReplicas,
+        targetCPUUtilizationPercentage: resource.targetCPUUtilizationPercentage,
+        currentCPUUtilizationPercentage:
+          resource.currentCPUUtilizationPercentage,
       };
     });
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -71,7 +80,7 @@ const ResourcesView = ({
           [`${row.namespace}_${row.name}`]: {
             namespace: row.namespace,
             name: row.name,
-            kind: row.kind
+            kind: row.kind,
           },
         }),
         {}
@@ -116,7 +125,7 @@ const ResourcesView = ({
       />
       <Table
         columns={getColumns(
-          filters.selectedResourceTypes.includes('pods') ? 'pods' : '',
+          filters.selectedResourceTypes,
           showModal,
           allStatuses,
           filters.selectedNamespaces,
