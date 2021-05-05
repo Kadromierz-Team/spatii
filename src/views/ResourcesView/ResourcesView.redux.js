@@ -9,6 +9,7 @@ import {
 
 const mapStateToProps = (state) => ({
   filters: state.filters,
+  resources: state.resources,
 });
 
 const mapDispatchToProps = {

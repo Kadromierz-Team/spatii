@@ -45,6 +45,7 @@ const reducer = (state = initState, action) => {
         resourceTypes: action.payload,
       };
     case CHANGE_RESOURCE_TYPES:
+      console.log({ action });
       return {
         ...state,
         selectedResourceTypes: action.payload,

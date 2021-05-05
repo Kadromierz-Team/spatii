@@ -57,6 +57,28 @@ export const getCurrentContext = () => async (dispatch, getState) => {
   });
 };
 
+export const getResources = () => async (dispatch, getState) => {
+  const service = new KubectlService();
+  const { selectedResourceTypes, selectedNamespaces } = getState().filters;
+
+  console.log({
+    selectedResourceTypes,
+    selectedNamespaces,
+  });
+
+  const resources = await service.getNamespaceResources(
+    selectedNamespaces[0],
+    selectedResourceTypes[0]
+  );
+
+  console.log({ resources });
+
+  dispatch({
+    type: AT.GET_RESOURCE_SUCCESSFUL,
+    payload: resources,
+  });
+};
+
 export const changeContext = (context) => async (dispatch, getState) => {
   const service = new KubectlService();
 
@@ -65,16 +87,36 @@ export const changeContext = (context) => async (dispatch, getState) => {
     type: AT.CHANGE_CONTEXT,
     payload: context,
   });
-  dispatch(getNamespaces());
-  dispatch(getResourceTypes());
+  await dispatch(changeNamespaces([]));
+  await dispatch(changeResourceTypes([]));
+  await dispatch(getNamespaces());
+  await dispatch(getResourceTypes());
 };
 
-export const changeNamespaces = (namespaces) => ({
-  type: AT.CHANGE_NAMESPACES,
-  payload: namespaces,
-});
+export const changeNamespaces = (namespaces) => async (dispatch, getState) => {
+  await dispatch({
+    type: AT.CHANGE_NAMESPACES,
+    payload: namespaces,
+  });
+  const resourceTypes = getState().filters.selectedResourceTypes;
 
-export const changeResourceTypes = (namespaces) => ({
-  type: AT.CHANGE_RESOURCE_TYPES,
-  payload: namespaces,
-});
+  if (namespaces.length > 0 && resourceTypes.length > 0) {
+    dispatch(getResources());
+  }
+};
+
+export const changeResourceTypes = (resourceTypes) => async (
+  dispatch,
+  getState
+) => {
+  await dispatch({
+    type: AT.CHANGE_RESOURCE_TYPES,
+    payload: resourceTypes,
+  });
+
+  const namespaces = getState().filters.selectedNamespaces;
+
+  if (resourceTypes.length > 0 && namespaces.length > 0) {
+    dispatch(getResources());
+  }
+};

@@ -30,9 +30,23 @@ class KubectlService {
   }
 
   async getNamespaceResources(namespace, resource) {
-    const args = ['get', resource, `-n=${namespace}`, '-o=name'];
+    const args = [
+      'get',
+      resource,
+      `-n=${namespace}`,
+      `-o=jsonpath='{range .items[*]}{.metadata.name}{"\\t"}{.spec.containers[0].image}{"\\t"}{.status.phase}{"\\n"}{end}'`,
+    ];
     const results = await this._execute(args);
-    return results.split('\n').map((item) => item.split('/')[1]);
+
+    return results.split('\n').map((item) => {
+      const [name, image, status] = item.split('\t');
+
+      return {
+        name: name.replace("'", ''),
+        image,
+        status,
+      };
+    });
   }
 
   async getContextResources() {
@@ -64,6 +78,7 @@ class KubectlService {
       return stdout;
     } catch (error) {
       console.log(`KubectlService Failed: ${error.shortMessage}`);
+      console.log(error);
     }
   }
 }

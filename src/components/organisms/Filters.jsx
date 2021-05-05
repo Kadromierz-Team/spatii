@@ -60,8 +60,9 @@ const Filters = ({
         value={selectedResourceTypes}
         mode="multiple"
         options={resourceTypesOptions}
-        onChange={(namespaces) => {
-          changeResourceTypes(namespaces);
+        onChange={(resourceTypes) => {
+          console.log('CHANGE', { resourceTypes });
+          changeResourceTypes(resourceTypes);
         }}
       />
 

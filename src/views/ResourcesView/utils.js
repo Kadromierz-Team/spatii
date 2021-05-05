@@ -4,9 +4,9 @@ import { Button } from '../../components/molecules';
 
 const getStatusColor = (value) => {
   switch (value) {
-    case 'OK':
+    case 'Running':
       return 'green';
-    case 'NOT OK':
+    case 'Failed':
       return 'red';
     default:
       return 'geekblue';

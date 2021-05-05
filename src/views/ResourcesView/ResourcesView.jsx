@@ -20,8 +20,8 @@ const data = [
     status: 'NOT OK',
   },
   {
-    key: '2',
-    name: 'POD2',
+    key: '3',
+    name: 'POD3',
     isSelected: true,
     status: 'NO INFO',
   },
@@ -33,8 +33,19 @@ const ResourcesView = ({
   changeContext,
   changeNamespaces,
   changeResourceTypes,
+  resources,
 }) => {
-  console.log(filters);
+  console.log({ resources });
+  const formattedResources = resources
+    .filter((resource) => resource.name && resource.status)
+    .map((resource) => {
+      const splitImage = resource.image?.split(':');
+
+      return {
+        ...resource,
+        imageTag: splitImage ? splitImage[splitImage.length - 1] : undefined,
+      };
+    });
   return (
     <div className="resource-view-wrapper">
       <PageHeader title={'Spatii'} />
@@ -44,15 +55,14 @@ const ResourcesView = ({
         changeNamespaces={changeNamespaces}
         changeResourceTypes={changeResourceTypes}
       />
-      <Table columns={getColumns('pod')} data={data} />
-      <div></div>
+      <Table columns={getColumns('pod')} data={formattedResources} />
     </div>
   );
 };
 
 ResourcesView.propTypes = {
   filters: PropTypes.shape({
-    selectedContext: PropTypes.shape({}),
+    selectedContext: PropTypes.string,
     contexts: PropTypes.arrayOf(PropTypes.shape({})),
   }),
   getInitData: PropTypes.func,
