@@ -93,6 +93,11 @@ export const getResources = () => async (dispatch, getState) => {
   });
 };
 
+export const changeSearchText = (text) => ({
+  type: AT.CHANGE_SEARCH_TEXT,
+  payload: text,
+});
+
 export const changeContext = (context) => async (dispatch, getState) => {
   await kubectlService.changeContext(context);
   await dispatch({

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { PageHeader, Checkbox, Tag } from 'antd';
+import { PageHeader, Checkbox, Tag, Space, Input } from 'antd';
 import { Filters, ModalJsonView, Refresh } from '../../components/organisms';
 import { Table, Button } from '../../components/molecules';
 import { getColumns } from './utils';
@@ -15,6 +15,7 @@ const ResourcesView = ({
   getResourceDescription,
   clearResourceDescription,
   changeSelectedResources,
+  changeSearchText,
   selectedResources,
   refreshing,
   changeRefreshInterval,
@@ -24,7 +25,10 @@ const ResourcesView = ({
   deletePod,
 }) => {
   const formattedResources = resources
-    .filter((resource) => resource && resource.name)
+    .filter(
+      (resource) =>
+        resource && resource.name && resource.name.includes(filters.searchText)
+    )
     .map((resource) => {
       const splitImage = resource.image?.split(':');
 
@@ -54,6 +58,8 @@ const ResourcesView = ({
     clearResourceDescription();
     setResourceName(null);
   };
+
+  const onSearch = (event) => changeSearchText(event.target.value);
 
   const rowSelection = {
     type: 'checkbox',
@@ -86,12 +92,19 @@ const ResourcesView = ({
   return (
     <div className="resource-view-wrapper">
       <PageHeader title={'Spatii'} />
-      <Refresh
-        changeRefreshInterval={changeRefreshInterval}
-        getResources={getResources}
-        refreshing={refreshing}
-        toggleRefresh={toggleRefresh}
-      />
+      <Space direction="horizontal">
+        <Refresh
+          changeRefreshInterval={changeRefreshInterval}
+          getResources={getResources}
+          refreshing={refreshing}
+          toggleRefresh={toggleRefresh}
+        />
+        <Input.Search
+          allowClear
+          placeholder="filter resources"
+          onChange={onSearch}
+        />
+      </Space>
       <Filters
         {...filters}
         changeContext={changeContext}

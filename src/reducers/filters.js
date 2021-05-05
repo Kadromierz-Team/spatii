@@ -7,6 +7,7 @@ import {
   CHANGE_RESOURCE_TYPES,
   GET_RESOURCE_DESCRIPTION_SUCCESSFUL,
   CLEAR_RESOURCE_DESCRIPTION,
+  CHANGE_SEARCH_TEXT,
 } from '../constants/actionTypes';
 
 const initState = {
@@ -17,6 +18,7 @@ const initState = {
   resourceTypes: [],
   selectedResourceTypes: [],
   resourceDescription: null,
+  searchText: '',
 };
 
 const reducer = (state = initState, action) => {
@@ -61,6 +63,11 @@ const reducer = (state = initState, action) => {
       return {
         ...state,
         selectedResourceTypes: action.payload,
+      };
+    case CHANGE_SEARCH_TEXT:
+      return {
+        ...state,
+        searchText: action.payload,
       };
     default:
       return state;
