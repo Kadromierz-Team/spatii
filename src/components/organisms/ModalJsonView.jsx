@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactJson from 'react-json-view';
-import { Modal as AntModal, Skeleton } from 'antd';
+import { Modal as AntModal, Skeleton, Space } from 'antd';
 
 const ModalJsonView = ({
   visible,
   showEmptyState,
+  compactObject,
   jsonObject,
   handleOk,
   handleCancel,
@@ -22,12 +23,19 @@ const ModalJsonView = ({
       {jsonObject === null ? (
         <Skeleton />
       ) : (
-        <ReactJson
-          theme="shapeshifter"
-          collapsed="1"
-          style={{ width: 'auto' }}
-          src={jsonObject}
-        />
+        <Space direction="vertical">
+          <ReactJson
+            theme="shapeshifter"
+            style={{ width: 'auto' }}
+            src={compactObject}
+          />
+          <ReactJson
+            theme="shapeshifter"
+            collapsed="1"
+            style={{ width: 'auto' }}
+            src={jsonObject}
+          />{' '}
+        </Space>
       )}
     </AntModal>
   );
