@@ -23,6 +23,7 @@ const defaultColumns = (showDescribe, allStatuses, deletePod) => [
     sorter: {
       compare: (a, b) => (a.name > b.name ? 1 : -1),
     },
+    render:name=><CopyContent value={name}>{name}</CopyContent>,
   },
   {
     title: 'Status',
