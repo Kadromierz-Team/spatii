@@ -1,2 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap');
 @import '~antd/dist/antd.css';
 @import './components/organisms/Filters.scss';
+@import './views/LogsView/LogsView';
+@import './components/molecules/LogBox/LogBox';

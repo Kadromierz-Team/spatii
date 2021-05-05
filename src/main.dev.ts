@@ -11,7 +11,7 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import path from 'path';
-import { app, BrowserWindow, shell } from 'electron';
+import { app, BrowserWindow, shell, globalShortcut, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -91,6 +91,26 @@ const createWindow = async () => {
       mainWindow.show();
       mainWindow.focus();
     }
+
+    mainWindow.webContents.on('found-in-page', (event, result) => {
+      // if (result.finalUpdate) mainWindow.webContents.stopFindInPage('clearSelection')
+    })
+
+    ipcMain.on('search-text', (event, arg) => {
+      console.log('Arg',arg);
+      mainWindow.webContents.findInPage(arg);
+    });
+
+    // globalShortcut.register('CmdorCtrl+F', () => {
+    //   mainWindow.webContents.send('find_request', '');
+    //   mainWindow.webContents.findInPage('current/',{findNext: true});
+    // });
+    //
+    // setTimeout(()=>{
+    //   console.log('BAM!');
+    //   mainWindow.webContents.findInPage('current/');
+    // },7000)
+
   });
 
   mainWindow.on('closed', () => {
@@ -126,7 +146,13 @@ app.on('window-all-closed', () => {
 app.whenReady().then(createWindow).catch(console.log);
 
 app.on('activate', () => {
+
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) createWindow();
+
+
 });
+
+
+
