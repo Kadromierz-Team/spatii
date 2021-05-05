@@ -1,6 +1,7 @@
 import { exec } from 'child_process';
 import * as AT from '../constants/actionTypes';
 import KubectlService from '../services/KubectlService';
+import { formatCompactDescription } from '../utils/format';
 
 const kubectlService = new KubectlService();
 
@@ -35,10 +36,11 @@ export const getResourceDescription = (resourceName) => async (
     resourceType,
     namespace
   );
+  const compactDescription = formatCompactDescription(resourceObject);
 
   dispatch({
     type: AT.GET_RESOURCE_DESCRIPTION_SUCCESSFUL,
-    payload: resourceObject,
+    payload: { resourceObject, compactDescription },
   });
 };
 
