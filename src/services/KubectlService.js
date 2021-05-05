@@ -69,6 +69,7 @@ class KubectlService {
           restartCount,
           startedAt,
         ] = formattedItem?.split('\t');
+        const restartParsed = parseInt(restartCount);
 
         return {
           kind,
@@ -76,8 +77,9 @@ class KubectlService {
           image,
           status,
           namespace: singleResult.namespace,
-          restartCount: parseInt(restartCount) || 'N/A',
+          restartCount: isNaN(restartParsed) ? 0 : restartParsed,
           startedAt: startedAt ? moment(startedAt).fromNow() : 'N/A',
+          startedAtTimestamp: startedAt ? new Date(startedAt).getTime() : 0,
         };
       });
     });

@@ -12,6 +12,7 @@ import {
   changeRefreshInterval,
   getResources,
   deletePod,
+  changeSearchText,
 } from '../../actions';
 
 import { startLogs } from '../../actions/logs';
@@ -32,6 +33,7 @@ const mapDispatchToProps = {
   clearResourceDescription,
   changeSelectedResources,
   toggleRefresh,
+  changeSearchText,
   changeRefreshInterval,
   getResources,
   startLogs,
