@@ -11,9 +11,10 @@ import {
   toggleRefresh,
   changeRefreshInterval,
   getResources,
+  deletePod,
 } from '../../actions';
 
-import {startLogs} from '../../actions/logs';
+import { startLogs } from '../../actions/logs';
 
 const mapStateToProps = (state) => ({
   filters: state.filters,
@@ -33,7 +34,8 @@ const mapDispatchToProps = {
   toggleRefresh,
   changeRefreshInterval,
   getResources,
-  startLogs
+  startLogs,
+  deletePod,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResourcesView);

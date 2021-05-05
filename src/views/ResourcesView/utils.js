@@ -13,7 +13,7 @@ const getStatusColor = (value) => {
   }
 };
 
-const defaultColumns = (showDescribe, allStatuses) => [
+const defaultColumns = (showDescribe, allStatuses, deletePod) => [
   {
     title: 'Name',
     dataIndex: 'name',
@@ -40,16 +40,30 @@ const defaultColumns = (showDescribe, allStatuses) => [
     title: 'Options',
     dataIndex: 'options',
     key: 'options',
-    render: (value) => (
-      <div>
-        <Button
-          type="link"
-          text="Describe"
-          onClick={() => showDescribe(value)}
-        />
-        <Button type="link" text="Deploy" onClick={() => showDescribe(value)} />
-      </div>
-    ),
+    render: (value, record) => {
+      return (
+        <div>
+          <Button
+            type="link"
+            text="Describe"
+            onClick={() => showDescribe(value)}
+          />
+          <Button
+            type="link"
+            text="Deploy"
+            onClick={() => showDescribe(value)}
+          />
+          {record.kind === 'Pod' && (
+            <Button
+              danger
+              type="link"
+              text="Delete"
+              onClick={() => deletePod(record.name, record.namespace)}
+            />
+          )}
+        </div>
+      );
+    },
     order: 100,
   },
 ];
@@ -98,15 +112,30 @@ const namespaceColumns = [
   },
 ];
 
+const resourceTypesColumns = [
+  {
+    title: 'Kind',
+    dataIndex: 'kind',
+    key: 'kind',
+    order: 98,
+    sorter: {
+      compare: (a, b) => (a.kind > b.kind ? 1 : -1),
+    },
+  },
+];
+
 export const getColumns = (
   resourceType,
   describeFunc,
   allStatuses,
-  selectedNamespaces
+  selectedNamespaces,
+  selectedResourceTypes,
+  deletePod
 ) => {
   return [
-    ...defaultColumns(describeFunc, allStatuses),
+    ...defaultColumns(describeFunc, allStatuses, deletePod),
     ...(resourceColumns[resourceType] || []),
     ...(selectedNamespaces.length > 1 ? namespaceColumns : []),
+    ...(selectedResourceTypes.length > 1 ? resourceTypesColumns : []),
   ].sort((a, b) => a.order - b.order);
 };

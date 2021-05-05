@@ -154,3 +154,9 @@ export const toggleRefresh = (value) => ({
   type: AT.TOGGLE_REFRESH,
   payload: value,
 });
+
+export const deletePod = (name, namespace) => async (dispatch, getState) => {
+  const service = new KubectlService();
+  await service.deletePod(name, namespace);
+  await dispatch(getResources());
+};

@@ -32,6 +32,7 @@ class KubectlService {
 
   async getNamespaceResources(namespaces, resources) {
     const jsonPaths = [
+      '{.kind}',
       '{.metadata.name}',
       '{.spec.containers[0].image}',
       '{.status.phase}',
@@ -61,6 +62,7 @@ class KubectlService {
       return singleResult.resources.split('\n').map((item) => {
         const formattedItem = item?.replace("'", '');
         const [
+          kind,
           name,
           image,
           status,
@@ -69,7 +71,8 @@ class KubectlService {
         ] = formattedItem?.split('\t');
 
         return {
-          name: name.replace("'", ''),
+          kind,
+          name: name?.replace("'", ''),
           image,
           status,
           namespace: singleResult.namespace,
@@ -98,6 +101,12 @@ class KubectlService {
     const results = await this._execute(args);
     const parsedResults = JSON.parse(results);
     return parsedResults.items.map((item) => item.metadata.name);
+  }
+
+  async deletePod(name, namespace) {
+    const args = ['delete', 'pod', name, `-n=${namespace}`];
+
+    return this._execute(args);
   }
 
   _getUsableResourceName(resources) {

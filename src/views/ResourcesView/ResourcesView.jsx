@@ -21,8 +21,8 @@ const ResourcesView = ({
   getResources,
   toggleRefresh,
   startLogs,
+  deletePod,
 }) => {
-  console.log([selectedResources]);
   const formattedResources = resources
     .filter((resource) => resource && resource.name)
     .map((resource) => {
@@ -32,7 +32,6 @@ const ResourcesView = ({
         ...resource,
         imageTag: splitImage ? splitImage[splitImage.length - 1] : undefined,
         options: resource.name,
-        isSelected: resource.name,
         key: resource.name,
       };
     });
@@ -105,7 +104,9 @@ const ResourcesView = ({
           filters.selectedResourceTypes.includes('pods') ? 'pods' : '',
           showModal,
           allStatuses,
-          filters.selectedNamespaces
+          filters.selectedNamespaces,
+          filters.selectedResourceTypes,
+          deletePod
         )}
         data={formattedResources}
         rowSelection={rowSelection}
