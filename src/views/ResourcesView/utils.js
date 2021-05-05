@@ -97,7 +97,8 @@ const resourceColumns = {
       dataIndex: 'startedAt',
       order: 5,
       sorter: {
-        compare: (a, b) => (a.startedAt > b.startedAt ? 1 : -1),
+        compare: (a, b) =>
+          a.startedAtTimestamp > b.startedAtTimestamp ? 1 : -1,
       },
     },
   ],
