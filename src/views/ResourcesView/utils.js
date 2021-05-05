@@ -1,6 +1,7 @@
 import React from 'react';
 import { PageHeader, Tag } from 'antd';
-import { Button } from '../../components/molecules';
+import { Button, CopyContent } from '../../components/molecules';
+
 
 const getStatusColor = (value) => {
   switch (value) {
@@ -78,6 +79,7 @@ const resourceColumns = {
       sorter: {
         compare: (a, b) => (a.imageTag > b.imageTag ? 1 : -1),
       },
+      render:tag=><CopyContent value={tag}>{tag}</CopyContent>,
     },
     {
       title: 'Restart count',
