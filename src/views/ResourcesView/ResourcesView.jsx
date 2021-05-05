@@ -20,6 +20,7 @@ const ResourcesView = ({
   changeRefreshInterval,
   getResources,
   toggleRefresh,
+  startLogs
 }) => {
   console.log([selectedResources]);
   const formattedResources = resources
@@ -88,6 +89,7 @@ const ResourcesView = ({
         changeContext={changeContext}
         changeNamespaces={changeNamespaces}
         changeResourceTypes={changeResourceTypes}
+        startLogs={startLogs}
       />
       <Table
         columns={getColumns(

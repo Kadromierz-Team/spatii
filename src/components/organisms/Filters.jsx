@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Select, SelectOption, Button } from '../../molecules';
+import { Select, SelectOption, Button } from '../molecules';
+import {useHistory} from 'react-router-dom';
 
 import './Filters.scss';
-import { useHistory } from 'react-router-dom';
 
 const Filters = ({
   changeContext,
@@ -15,7 +15,7 @@ const Filters = ({
   selectedNamespaces,
   resourceTypes,
   selectedResourceTypes,
-  startLogs
+  startLogs,
 }) => {
   console.log({
     changeContext,
@@ -37,6 +37,7 @@ const Filters = ({
     label: resourceType,
   }));
   let history = useHistory();
+
   console.log({ selectedResourceTypes });
 
   return (
@@ -46,7 +47,6 @@ const Filters = ({
         value={selectedContext}
         onChange={(newContext) => changeContext(newContext)}
         options={contextOptions}
-        allowCLear={false}
       />
 
       <Select

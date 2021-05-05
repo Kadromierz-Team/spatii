@@ -1,4 +1,7 @@
 @import '~antd/dist/antd.dark.css';
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap');
 @import './components/organisms/Filters/Filters.scss';
 @import './components/organisms/Refresh/Refresh.scss';
-@import './views//ResourcesView/ResourcesView.scss';
+@import './views/ResourcesView/ResourcesView.scss';
+@import './views/LogsView/LogsView';
+@import './components/molecules/LogBox/LogBox';
