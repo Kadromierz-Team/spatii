@@ -1,0 +1,18 @@
+.logsBox{
+  background-color: #292929;
+  color: white;
+  display: inline-block;
+  word-wrap: break-word;
+  margin: 0 20px 20px;
+  padding: 10px;
+  max-height: calc(100vh - 200px);
+  overflow-y: scroll;
+  overflow-wrap: break-word;
+  box-sizing: border-box;
+  font-family: 'Source Code Pro', monospace;
+}
+
+.logsSourceLabel{
+  font-family: 'Source Code Pro', monospace;
+  color: red;
+}
