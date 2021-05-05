@@ -1,4 +1,5 @@
 import execa from 'execa';
+import moment from 'moment';
 
 class KubectlService {
   async getContexts() {
@@ -30,11 +31,18 @@ class KubectlService {
   }
 
   async getNamespaceResources(namespaces, resources) {
+    const jsonPaths = [
+      '{.metadata.name}',
+      '{.spec.containers[0].image}',
+      '{.status.phase}',
+      '{.status.containerStatuses[0].restartCount}',
+      '{.status.containerStatuses[0].state.running.startedAt}',
+    ];
     const argsArray = namespaces.map((namespace) => [
       'get',
       resources.join(','),
       `-n=${namespace}`,
-      `-o=jsonpath='{range .items[*]}{.metadata.name}{"\\t"}{.spec.containers[0].image}{"\\t"}{.status.phase}{"\\n"}{end}'`,
+      `-o=jsonpath='{range .items[*]}${jsonPaths.join('{"\\t"}')}{"\\n"}{end}'`,
     ]);
     const resultsPromises = argsArray.map((args) => this._execute(args));
     const results = await Promise.all(resultsPromises);
@@ -42,12 +50,20 @@ class KubectlService {
     return results.flatMap((singleResult) => {
       return singleResult.split('\n').map((item) => {
         const formattedItem = item?.replace("'", '');
-        const [name, image, status] = formattedItem?.split('\t');
-
-        return {
+        const [
           name,
           image,
           status,
+          restartCount,
+          startedAt,
+        ] = formattedItem?.split('\t');
+
+        return {
+          name: name.replace("'", ''),
+          image,
+          status,
+          restartCount: parseInt(restartCount) || 'N/A',
+          startedAt: startedAt ? moment(startedAt).fromNow() : 'N/A',
         };
       });
     });

@@ -64,6 +64,24 @@ const resourceColumns = {
         compare: (a, b) => (a.imageTag > b.imageTag ? 1 : -1),
       },
     },
+    {
+      title: 'Restart count',
+      key: 'restartCount',
+      dataIndex: 'restartCount',
+      order: 4,
+      sorter: {
+        compare: (a, b) => (a.restartCount > b.restartCount ? 1 : -1),
+      },
+    },
+    {
+      title: 'Started At',
+      key: 'startedAt',
+      dataIndex: 'startedAt',
+      order: 5,
+      sorter: {
+        compare: (a, b) => (a.startedAt > b.startedAt ? 1 : -1),
+      },
+    },
   ],
 };
 
