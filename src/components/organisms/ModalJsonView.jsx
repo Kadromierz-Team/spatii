@@ -13,12 +13,22 @@ const ModalJsonView = ({
 }) => {
   return (
     <AntModal
+      width="80%"
       title={title}
       visible={visible}
       onOk={handleOk}
       onCancel={handleCancel}
     >
-      {jsonObject === null ? <Skeleton /> : <ReactJson src={jsonObject} />}
+      {jsonObject === null ? (
+        <Skeleton />
+      ) : (
+        <ReactJson
+          theme="shapeshifter"
+          collapsed="1"
+          style={{ width: 'auto' }}
+          src={jsonObject}
+        />
+      )}
     </AntModal>
   );
 };
