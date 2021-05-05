@@ -85,7 +85,7 @@ export const getResources = () => async (dispatch, getState) => {
 
   const resources = await service.getNamespaceResources(
     selectedNamespaces,
-    selectedResourceTypes[0]
+    selectedResourceTypes
   );
 
   console.log({ resources });

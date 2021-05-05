@@ -18,7 +18,7 @@ const ResourcesView = ({
   selectedResources,
 }) => {
   const formattedResources = resources
-    .filter((resource) => resource && resource.name && resource.status)
+    .filter((resource) => resource && resource.name)
     .map((resource) => {
       const splitImage = resource.image?.split(':');
 
@@ -30,6 +30,7 @@ const ResourcesView = ({
         key: resource.name,
       };
     });
+  console.log({ resources, formattedResources });
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [resourceName, setResourceName] = useState(null);
   const showModal = (value) => {

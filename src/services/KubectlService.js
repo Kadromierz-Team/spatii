@@ -29,10 +29,10 @@ class KubectlService {
     return this._execute(args);
   }
 
-  async getNamespaceResources(namespaces, resource) {
+  async getNamespaceResources(namespaces, resources) {
     const argsArray = namespaces.map((namespace) => [
       'get',
-      resource,
+      resources.join(','),
       `-n=${namespace}`,
       `-o=jsonpath='{range .items[*]}{.metadata.name}{"\\t"}{.spec.containers[0].image}{"\\t"}{.status.phase}{"\\n"}{end}'`,
     ]);
