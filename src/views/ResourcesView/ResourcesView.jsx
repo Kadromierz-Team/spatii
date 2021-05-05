@@ -15,10 +15,11 @@ const ResourcesView = ({
   getResourceDescription,
   clearResourceDescription,
   changeSelectedResources,
+  selectedResources,
   startLogs
 }) => {
   const formattedResources = resources
-    .filter((resource) => resource.name && resource.status)
+    .filter((resource) => resource && resource.name)
     .map((resource) => {
       const splitImage = resource.image?.split(':');
 
@@ -30,6 +31,7 @@ const ResourcesView = ({
         key: resource.name,
       };
     });
+  console.log({ resources, formattedResources });
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [resourceName, setResourceName] = useState(null);
   const showModal = (value) => {
@@ -57,8 +59,16 @@ const ResourcesView = ({
     },
     getCheckboxProps: (record) => ({
       name: record.name,
+      checked: selectedResources.includes(record.name),
     }),
   };
+
+  const allStatuses = Array.from(
+    new Set(formattedResources.map((resource) => resource.status))
+  ).map((status) => ({
+    text: status,
+    value: status,
+  }));
 
   return (
     <div className="resource-view-wrapper">
@@ -71,7 +81,11 @@ const ResourcesView = ({
         startLogs={startLogs}
       />
       <Table
-        columns={getColumns('pod', showModal)}
+        columns={getColumns(
+          filters.selectedResourceTypes.includes('pods') ? 'pods' : '',
+          showModal,
+          allStatuses
+        )}
         data={formattedResources}
         rowSelection={rowSelection}
       />

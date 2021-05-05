@@ -15,6 +15,7 @@ import {startLogs} from '../../actions/logs';
 const mapStateToProps = (state) => ({
   filters: state.filters,
   resources: state.resources,
+  selectedResources: state.selectedResources,
 });
 
 const mapDispatchToProps = {
