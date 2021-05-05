@@ -13,7 +13,7 @@ const getStatusColor = (value) => {
   }
 };
 
-const defaultColumns = (showDescribe) => [
+const defaultColumns = (showDescribe, allStatuses) => [
   {
     title: 'Name',
     dataIndex: 'name',
@@ -32,6 +32,8 @@ const defaultColumns = (showDescribe) => [
     sorter: {
       compare: (a, b) => (a.status > b.status ? 1 : -1),
     },
+    filters: allStatuses,
+    onFilter: (value, record) => record.status.includes(value),
   },
   {
     title: 'Options',
@@ -52,7 +54,7 @@ const defaultColumns = (showDescribe) => [
 ];
 
 const resourceColumns = {
-  pod: [
+  pods: [
     {
       title: 'Image tag',
       key: 'imageTag',
@@ -65,14 +67,9 @@ const resourceColumns = {
   ],
 };
 
-export const getColumns = (
-  resourceType,
-  describeFunc,
-  selectResource,
-  deselectResource
-) => {
+export const getColumns = (resourceType, describeFunc, allStatuses) => {
   return [
-    ...defaultColumns(describeFunc),
+    ...defaultColumns(describeFunc, allStatuses),
     ...(resourceColumns[resourceType] || []),
   ].sort((a, b) => a.order - b.order);
 };

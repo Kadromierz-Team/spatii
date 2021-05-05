@@ -58,6 +58,7 @@ class KubectlService {
     ];
     const results = await this._execute(args);
     const resourcesArray = results.split('\n');
+    console.log({ resourcesArray });
     return this._getUsableResourceName(resourcesArray);
   }
 
@@ -69,7 +70,9 @@ class KubectlService {
   }
 
   _getUsableResourceName(resources) {
-    return resources.map((resource) => resource.split('.')[0]);
+    return Array.from(
+      new Set(resources.map((resource) => resource.split('.')[0]))
+    );
   }
 
   async _execute(args) {

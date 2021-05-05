@@ -59,6 +59,15 @@ const ResourcesView = ({
     }),
   };
 
+  const allStatuses = Array.from(
+    new Set(formattedResources.map((resource) => resource.status))
+  ).map((status) => ({
+    text: status,
+    value: status,
+  }));
+
+  console.log({ allStatuses });
+
   return (
     <div className="resource-view-wrapper">
       <PageHeader title={'Spatii'} />
@@ -69,7 +78,11 @@ const ResourcesView = ({
         changeResourceTypes={changeResourceTypes}
       />
       <Table
-        columns={getColumns('pod', showModal)}
+        columns={getColumns(
+          filters.selectedResourceTypes.includes('pods') ? 'pods' : '',
+          showModal,
+          allStatuses
+        )}
         data={formattedResources}
         rowSelection={rowSelection}
       />
