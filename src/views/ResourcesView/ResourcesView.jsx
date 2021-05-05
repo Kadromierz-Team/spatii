@@ -14,6 +14,8 @@ const ResourcesView = ({
   resources,
   getResourceDescription,
   clearResourceDescription,
+  selectResource,
+  unselectResource,
 }) => {
   const formattedResources = resources
     .filter((resource) => resource.name && resource.status)
@@ -23,6 +25,8 @@ const ResourcesView = ({
       return {
         ...resource,
         imageTag: splitImage ? splitImage[splitImage.length - 1] : undefined,
+        options: resource.name,
+        isSelected: resource.name,
       };
     });
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -54,7 +58,10 @@ const ResourcesView = ({
         changeNamespaces={changeNamespaces}
         changeResourceTypes={changeResourceTypes}
       />
-      <Table columns={getColumns('pod')} data={formattedResources} />
+      <Table
+        columns={getColumns('pod', showModal, selectResource, unselectResource)}
+        data={formattedResources}
+      />
       <ModalJsonView
         visible={isModalVisible}
         handleOk={handleOk}

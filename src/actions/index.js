@@ -139,3 +139,13 @@ export const changeResourceTypes = (resourceTypes) => async (
     dispatch(getResources());
   }
 };
+
+export const selectResource = (resource) => ({
+  type: AT.SELECT_RESOURCE,
+  payload: resource,
+});
+
+export const unselectResource = (resource) => ({
+  type: AT.UNSELECT_RESOURCE,
+  payload: resource,
+});

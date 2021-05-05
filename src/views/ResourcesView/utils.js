@@ -13,12 +13,19 @@ const getStatusColor = (value) => {
   }
 };
 
-const defaultColumns = (showDescribe) => [
+const defaultColumns = (showDescribe, selectResource, deselectResource) => [
   {
     title: '',
     dataIndex: 'isSelected',
     key: 'isSelected',
-    render: (value) => <Checkbox checked={value} />,
+    render: (value) => (
+      <Checkbox
+        checked={value}
+        onChange={() => {
+          value ? deselectResource(value) : selectResource(value);
+        }}
+      />
+    ),
     order: 0,
   },
   {
@@ -63,9 +70,14 @@ const resourceColumns = {
   ],
 };
 
-export const getColumns = (resourceType, describeFunc) => {
+export const getColumns = (
+  resourceType,
+  describeFunc,
+  selectResource,
+  deselectResource
+) => {
   return [
-    ...defaultColumns(describeFunc),
+    ...defaultColumns(describeFunc, selectResource, deselectResource),
     ...(resourceColumns[resourceType] || []),
   ].sort((a, b) => a.order - b.order);
 };
