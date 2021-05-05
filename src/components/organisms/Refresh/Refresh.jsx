@@ -1,7 +1,7 @@
 import { Checkbox } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { changeRefreshInterval } from '../../../actions';
-import { Select } from '../../molecules';
+import { Select, Button } from '../../molecules';
 
 const options = [5, 10, 15, 20];
 
@@ -34,6 +34,7 @@ const Refresh = ({
 
   return (
     <div className="refresh">
+      <Button text="Refresh" onClick={getResources} />
       <Checkbox checked={isEnabled} onChange={() => toggleRefresh(!isEnabled)}>
         Autorefresh
       </Checkbox>
