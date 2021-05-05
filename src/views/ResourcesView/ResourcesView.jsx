@@ -59,15 +59,21 @@ const ResourcesView = ({
   const rowSelection = {
     type: 'checkbox',
     onChange: (selectedRowKeys, selectedRows) => {
-      const keys = selectedRows.map((row) => ({
-        namespace: row.namespace,
-        name: row.name,
-      }));
+      const keys = selectedRows.reduce(
+        (result, row) => ({
+          ...result,
+          [`${row.namespace}_${row.name}`]: {
+            namespace: row.namespace,
+            name: row.name,
+          },
+        }),
+        {}
+      );
       changeSelectedResources(keys);
     },
     getCheckboxProps: (record) => ({
       name: record.name,
-      checked: selectedResources.includes(record.name),
+      checked: Boolean(selectedResources[`${record.namespace}_${record.name}`]),
     }),
   };
 
