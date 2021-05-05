@@ -10,6 +10,8 @@ import {
   changeSelectedResources,
 } from '../../actions';
 
+import {startLogs} from '../../actions/logs';
+
 const mapStateToProps = (state) => ({
   filters: state.filters,
   resources: state.resources,
@@ -23,6 +25,7 @@ const mapDispatchToProps = {
   getResourceDescription,
   clearResourceDescription,
   changeSelectedResources,
+  startLogs
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResourcesView);

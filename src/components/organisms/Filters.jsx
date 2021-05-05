@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Select, SelectOption, Button } from '../molecules';
+import {useHistory} from 'react-router-dom';
 
 import './Filters.scss';
 
@@ -14,6 +15,7 @@ const Filters = ({
   selectedNamespaces,
   resourceTypes,
   selectedResourceTypes,
+  startLogs,
 }) => {
   console.log({
     changeContext,
@@ -34,6 +36,7 @@ const Filters = ({
     value: resourceType,
     label: resourceType,
   }));
+  let history = useHistory();
 
   console.log({ selectedResourceTypes });
 
@@ -66,7 +69,10 @@ const Filters = ({
         }}
       />
 
-      <Button text="Logs" type="primary" onClick={() => {}} />
+      <Button text="Logs" type="primary" onClick={() => {
+        startLogs();
+        history.push("/logs");
+      }} />
     </div>
   );
 };

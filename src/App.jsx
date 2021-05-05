@@ -14,7 +14,9 @@ export default function App() {
     <Provider store={store}>
       <Router>
         <Switch>
-          <Route path="/" component={LogsView} />
+          <Route path="/logs" component={LogsView} />
+          <Route path="/" component={ResourcesView} />
+
         </Switch>
       </Router>
     </Provider>

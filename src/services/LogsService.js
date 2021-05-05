@@ -1,22 +1,29 @@
 import { spawn } from "child_process";
+import moment from "moment";
 import {bindClassFunctions} from '../utils/micsUtils';
 import * as AT from '../constants/actionTypes';
 
 class LogsService{
   constructor(pods, dispatch) {
+  this.pods = pods;
   this.dispatch = dispatch;
   this.process = {};
+  this.state = `init`;
+  this.pausedAt = null;
+
 
   bindClassFunctions(this);
 
-  this.init(pods);
+  this.start();
   }
 
-  init(pods){
-    pods.forEach(podConfig =>{
+  start(from){
+    const fromDate = from || moment().startOf('day').toISOString();
+    this.pods.forEach(podConfig =>{
       const {name, namespace} = podConfig;
-      this.startListener(name, namespace);
+      this.startListener(name, namespace,fromDate);
     })
+    this.state = 'running';
   }
 
   stop(){
@@ -24,6 +31,22 @@ class LogsService{
       this.process[key].kill();
       delete this.process[key];
     })
+  }
+
+  pause(){
+    if(this.state === 'running'){
+      this.state = 'paused';
+      this.pausedAt = moment().toISOString();
+      this.stop();
+    }
+  }
+
+  resume(){
+    if(this.state === 'paused') {
+      this.state = 'running';
+      this.start(this.pausedAt);
+      this.pausedAt = null;
+    }
   }
 
   onNewLog(podName, value, type='logs'){
@@ -42,9 +65,10 @@ class LogsService{
     }
   }
 
-  startListener(podName, namespace){
+  startListener(podName, namespace, from){
+
     const podSlug = this.getPodSlug(podName, namespace);
-    const command = spawn('kubectl',['-n',namespace,'logs',`pod/${podName}`,'-f']);
+    const command = spawn('kubectl',['-n',namespace,'logs',`pod/${podName}`,'-f',`--since-time=${from}`]);
 
     command.stdout.on('data', (data) => {
       this.onNewLog(podSlug, data.toString());

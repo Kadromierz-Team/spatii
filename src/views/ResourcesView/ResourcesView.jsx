@@ -15,6 +15,7 @@ const ResourcesView = ({
   getResourceDescription,
   clearResourceDescription,
   changeSelectedResources,
+  startLogs
 }) => {
   const formattedResources = resources
     .filter((resource) => resource.name && resource.status)
@@ -67,6 +68,7 @@ const ResourcesView = ({
         changeContext={changeContext}
         changeNamespaces={changeNamespaces}
         changeResourceTypes={changeResourceTypes}
+        startLogs={startLogs}
       />
       <Table
         columns={getColumns('pod', showModal)}
