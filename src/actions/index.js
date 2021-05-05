@@ -78,17 +78,14 @@ export const getResources = () => async (dispatch, getState) => {
   const service = new KubectlService();
   const { selectedResourceTypes, selectedNamespaces } = getState().filters;
 
-  console.log({
-    selectedResourceTypes,
-    selectedNamespaces,
-  });
+  if (selectedResourceTypes.length === 0 || selectedNamespaces.length === 0) {
+    return;
+  }
 
   const resources = await service.getNamespaceResources(
     selectedNamespaces,
     selectedResourceTypes
   );
-
-  console.log({ resources });
 
   dispatch({
     type: AT.GET_RESOURCE_SUCCESSFUL,
@@ -119,9 +116,7 @@ export const changeNamespaces = (namespaces) => async (dispatch, getState) => {
   });
   const resourceTypes = getState().filters.selectedResourceTypes;
 
-  if (namespaces.length > 0 && resourceTypes.length > 0) {
-    dispatch(getResources());
-  }
+  dispatch(getResources());
 };
 
 export const changeResourceTypes = (resourceTypes) => async (
@@ -135,9 +130,7 @@ export const changeResourceTypes = (resourceTypes) => async (
 
   const namespaces = getState().filters.selectedNamespaces;
 
-  if (resourceTypes.length > 0 && namespaces.length > 0) {
-    dispatch(getResources());
-  }
+  dispatch(getResources());
 };
 
 export const changeSelectedResources = (resources) => ({
