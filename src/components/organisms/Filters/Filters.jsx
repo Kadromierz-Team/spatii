@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Select, SelectOption, Button } from '../molecules';
+import { Select, SelectOption, Button } from '../../molecules';
 
 import './Filters.scss';
 
@@ -44,6 +44,7 @@ const Filters = ({
         value={selectedContext}
         onChange={(newContext) => changeContext(newContext)}
         options={contextOptions}
+        allowCLear={false}
       />
 
       <Select

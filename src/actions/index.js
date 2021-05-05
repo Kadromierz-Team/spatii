@@ -144,3 +144,13 @@ export const changeSelectedResources = (resources) => ({
   type: AT.CHANGE_SELECTED_RESOURCE,
   payload: resources,
 });
+
+export const changeRefreshInterval = (interval) => ({
+  type: AT.CHANGE_REFRESH_INTERVAL,
+  payload: interval,
+});
+
+export const toggleRefresh = (value) => ({
+  type: AT.TOGGLE_REFRESH,
+  payload: value,
+});

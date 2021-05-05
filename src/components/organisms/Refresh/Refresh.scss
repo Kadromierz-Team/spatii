@@ -1,0 +1,11 @@
+.refresh {
+  width: 300px;
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+
+  .ant-select {
+    max-width: 70px;
+    margin-right: 10px;
+  }
+}

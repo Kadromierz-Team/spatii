@@ -14,6 +14,7 @@ const Select = ({
   loading = false,
   children,
   options,
+  allowClear = true,
 }) => (
   <AntSelect
     mode={mode}

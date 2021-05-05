@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { PageHeader, Checkbox, Tag } from 'antd';
-import { Filters, ModalJsonView } from '../../components/organisms';
+import { Filters, ModalJsonView, Refresh } from '../../components/organisms';
 import { Table, Button } from '../../components/molecules';
 import { getColumns } from './utils';
 
@@ -16,6 +16,10 @@ const ResourcesView = ({
   clearResourceDescription,
   changeSelectedResources,
   selectedResources,
+  refreshing,
+  changeRefreshInterval,
+  getResources,
+  toggleRefresh,
 }) => {
   const formattedResources = resources
     .filter((resource) => resource && resource.name)
@@ -72,6 +76,12 @@ const ResourcesView = ({
   return (
     <div className="resource-view-wrapper">
       <PageHeader title={'Spatii'} />
+      <Refresh
+        changeRefreshInterval={changeRefreshInterval}
+        getResources={getResources}
+        refreshing={refreshing}
+        toggleRefresh={toggleRefresh}
+      />
       <Filters
         {...filters}
         changeContext={changeContext}

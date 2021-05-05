@@ -8,12 +8,16 @@ import {
   getResourceDescription,
   clearResourceDescription,
   changeSelectedResources,
+  toggleRefresh,
+  changeRefreshInterval,
+  getResources,
 } from '../../actions';
 
 const mapStateToProps = (state) => ({
   filters: state.filters,
   resources: state.resources,
   selectedResources: state.selectedResources,
+  refreshing: state.refreshing,
 });
 
 const mapDispatchToProps = {
@@ -24,6 +28,9 @@ const mapDispatchToProps = {
   getResourceDescription,
   clearResourceDescription,
   changeSelectedResources,
+  toggleRefresh,
+  changeRefreshInterval,
+  getResources,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResourcesView);
