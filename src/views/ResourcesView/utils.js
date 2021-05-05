@@ -37,11 +37,6 @@ const defaultColumns = (showDescribe, allStatuses, deletePod) => [
             text="Describe"
             onClick={() => showDescribe(value)}
           />
-          <Button
-            type="link"
-            text="Deploy"
-            onClick={() => showDescribe(value)}
-          />
           {record.kind === 'Pod' && (
             <Button
               danger
