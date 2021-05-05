@@ -40,7 +40,7 @@ export const getResourceDescription = (resourceName) => async (
 
   dispatch({
     type: AT.GET_RESOURCE_DESCRIPTION_SUCCESSFUL,
-    payload: resourceObject,
+    payload: { resourceObject, compactDescription },
   });
 };
 

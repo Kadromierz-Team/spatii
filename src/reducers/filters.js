@@ -18,6 +18,7 @@ const initState = {
   resourceTypes: [],
   selectedResourceTypes: [],
   resourceDescription: null,
+  compactDescription: null,
   searchText: '',
 };
 
@@ -56,12 +57,14 @@ const reducer = (state = initState, action) => {
     case GET_RESOURCE_DESCRIPTION_SUCCESSFUL:
       return {
         ...state,
-        resourceDescription: action.payload,
+        resourceDescription: action.payload.resourceObject,
+        compactDescription: action.payload.compactDescription,
       };
     case CLEAR_RESOURCE_DESCRIPTION:
       return {
         ...state,
         resourceDescription: null,
+        compactDescription: null,
       };
     case CHANGE_RESOURCE_TYPES:
       return {

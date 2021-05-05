@@ -142,6 +142,7 @@ const ResourcesView = ({
         handleCancel={handleCancel}
         title={resourceName}
         jsonObject={filters.resourceDescription}
+        compactObject={filters.compactDescription}
       />
     </div>
   );
