@@ -70,6 +70,7 @@ const ResourcesView = ({
           [`${row.namespace}_${row.name}`]: {
             namespace: row.namespace,
             name: row.name,
+            kind: row.kind
           },
         }),
         {}

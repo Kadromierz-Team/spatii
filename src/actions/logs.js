@@ -4,9 +4,8 @@ import * as AT from '../constants/actionTypes';
 let logsService = null;
 
 export const startLogs = ()=>(dispatch, getState)=>{
-  const {selectedResources, filters} = getState();
-  const namespace = filters.selectedNamespaces[0];
-  const pods = selectedResources.map(podName=>({name: podName, namespace}));
+  const {selectedResources} = getState();
+  const pods = Object.values(selectedResources).filter(resource=>resource.kind==='Pod');
   logsService = new LogsService(pods, dispatch);
 }
 
