@@ -21,6 +21,7 @@ const ResourcesView = ({
   getResources,
   toggleRefresh,
 }) => {
+  console.log([selectedResources]);
   const formattedResources = resources
     .filter((resource) => resource && resource.name)
     .map((resource) => {
@@ -34,7 +35,6 @@ const ResourcesView = ({
         key: resource.name,
       };
     });
-  console.log({ resources, formattedResources });
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [resourceName, setResourceName] = useState(null);
   const showModal = (value) => {
@@ -58,7 +58,8 @@ const ResourcesView = ({
   const rowSelection = {
     type: 'checkbox',
     onChange: (selectedRowKeys, selectedRows) => {
-      changeSelectedResources(selectedRowKeys);
+      const keys = selectedRows.map((row) => `${row.namespace}_${row.name}`);
+      changeSelectedResources(keys);
     },
     getCheckboxProps: (record) => ({
       name: record.name,
@@ -92,7 +93,8 @@ const ResourcesView = ({
         columns={getColumns(
           filters.selectedResourceTypes.includes('pods') ? 'pods' : '',
           showModal,
-          allStatuses
+          allStatuses,
+          filters.selectedNamespaces
         )}
         data={formattedResources}
         rowSelection={rowSelection}

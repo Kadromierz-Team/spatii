@@ -30,17 +30,25 @@ class KubectlService {
   }
 
   async getNamespaceResources(namespaces, resources) {
-    const argsArray = namespaces.map((namespace) => [
-      'get',
-      resources.join(','),
-      `-n=${namespace}`,
-      `-o=jsonpath='{range .items[*]}{.metadata.name}{"\\t"}{.spec.containers[0].image}{"\\t"}{.status.phase}{"\\n"}{end}'`,
-    ]);
-    const resultsPromises = argsArray.map((args) => this._execute(args));
-    const results = await Promise.all(resultsPromises);
+    const argsArray = namespaces.map((namespace) => ({
+      args: [
+        'get',
+        resources.join(','),
+        `-n=${namespace}`,
+        `-o=jsonpath='{range .items[*]}{.metadata.name}{"\\t"}{.spec.containers[0].image}{"\\t"}{.status.phase}{"\\n"}{end}'`,
+      ],
+      namespace,
+    }));
+    const results = await Promise.all(
+      argsArray.map(async ({ args, namespace }) => {
+        const resources = await this._execute(args);
+        return { resources, namespace };
+      })
+    );
 
     return results.flatMap((singleResult) => {
-      return singleResult.split('\n').map((item) => {
+      console.log({ singleResult });
+      return singleResult.resources.split('\n').map((item) => {
         const formattedItem = item?.replace("'", '');
         const [name, image, status] = formattedItem?.split('\t');
 
@@ -48,6 +56,7 @@ class KubectlService {
           name,
           image,
           status,
+          namespace: singleResult.namespace,
         };
       });
     });

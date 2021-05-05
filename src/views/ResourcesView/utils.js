@@ -35,6 +35,7 @@ const defaultColumns = (showDescribe, allStatuses) => [
     filters: allStatuses,
     onFilter: (value, record) => record.status.includes(value),
   },
+
   {
     title: 'Options',
     dataIndex: 'options',
@@ -67,9 +68,27 @@ const resourceColumns = {
   ],
 };
 
-export const getColumns = (resourceType, describeFunc, allStatuses) => {
+const namespaceColumns = [
+  {
+    title: 'Namespace',
+    dataIndex: 'namespace',
+    key: 'namespace',
+    order: 99,
+    sorter: {
+      compare: (a, b) => (a.namespace > b.namespace ? 1 : -1),
+    },
+  },
+];
+
+export const getColumns = (
+  resourceType,
+  describeFunc,
+  allStatuses,
+  selectedNamespaces
+) => {
   return [
     ...defaultColumns(describeFunc, allStatuses),
     ...(resourceColumns[resourceType] || []),
+    ...(selectedNamespaces.length > 1 ? namespaceColumns : []),
   ].sort((a, b) => a.order - b.order);
 };
