@@ -38,6 +38,9 @@ const reducer = (state = initState, action) => {
       return {
         ...state,
         namespaces: action.payload,
+        selectedNamespaces: action.payload.includes('production')
+          ? ['production']
+          : ['staging'],
       };
     case CHANGE_NAMESPACES:
       return {
@@ -48,6 +51,7 @@ const reducer = (state = initState, action) => {
       return {
         ...state,
         resourceTypes: action.payload,
+        selectedResourceTypes: ['pods'],
       };
     case GET_RESOURCE_DESCRIPTION_SUCCESSFUL:
       return {

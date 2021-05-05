@@ -19,6 +19,8 @@ export const getNamespaces = () => async (dispatch, getState) => {
     type: AT.GET_NAMESPACE_LIST_SUCCESSFUL,
     payload: namespaces,
   });
+
+  dispatch(getResources());
 };
 
 export const getResourceDescription = (resourceName) => async (
@@ -48,6 +50,7 @@ export const getResourceTypes = () => async (dispatch, getState) => {
     type: AT.GET_RESOURCE_TYPES_LIST_SUCCESSFUL,
     payload: resourceTypes,
   });
+  dispatch(getResources());
 };
 
 export const getContexts = () => (dispatch, getState) => {
@@ -164,8 +167,8 @@ export const toggleRefresh = (value) => ({
 
 export const deletePod = (name, namespace) => async (dispatch, getState) => {
   dispatch({
-    type: AT.SHOW_LOADER
-  })
+    type: AT.SHOW_LOADER,
+  });
   const service = new KubectlService();
   await service.deletePod(name, namespace);
   await dispatch(getResources());

@@ -15,7 +15,7 @@ const Filters = ({
   selectedNamespaces,
   resourceTypes,
   selectedResourceTypes,
-  startLogs
+  startLogs,
 }) => {
   console.log({
     changeContext,
@@ -28,14 +28,38 @@ const Filters = ({
     value: context,
     label: context,
   }));
-  const namespacesOptions = namespaces.map((namespace) => ({
-    value: namespace,
-    label: namespace,
-  }));
-  const resourceTypesOptions = resourceTypes.map((resourceType) => ({
-    value: resourceType,
-    label: resourceType,
-  }));
+  const namespacesOptions = namespaces
+    .sort((a, b) => {
+      if (a === 'staging' || a === 'production') {
+        return -1;
+      }
+
+      if (b === 'staging' || b === 'production') {
+        return 1;
+      }
+
+      return a < b ? -1 : 1;
+    })
+    .map((namespace) => ({
+      value: namespace,
+      label: namespace,
+    }));
+  const resourceTypesOptions = resourceTypes
+    .sort((a, b) => {
+      if (a === 'pods' || a === 'deployments') {
+        return -1;
+      }
+
+      if (b === 'pods' || b === 'deployments') {
+        return 1;
+      }
+
+      return a < b ? -1 : 1;
+    })
+    .map((resourceType) => ({
+      value: resourceType,
+      label: resourceType,
+    }));
   let history = useHistory();
   console.log({ selectedResourceTypes });
 
@@ -69,10 +93,14 @@ const Filters = ({
         }}
       />
 
-      <Button text="Logs" type="primary" onClick={() => {
-        startLogs();
-        history.push("/logs");
-      }} />
+      <Button
+        text="Logs"
+        type="primary"
+        onClick={() => {
+          startLogs();
+          history.push('/logs');
+        }}
+      />
     </div>
   );
 };
