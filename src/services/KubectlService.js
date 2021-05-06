@@ -2,6 +2,11 @@ import execa from 'execa';
 import moment from 'moment';
 
 class KubectlService {
+  constructor() {
+    this.kubectlPath = 'kubectl';
+    this._execute = this._changeKubectlPath.bind(this);
+  }
+
   async getContexts() {
     const args = ['config', 'get-contexts', '--no-headers=true', '-o=name'];
     const results = await this._execute(args);
@@ -132,6 +137,10 @@ class KubectlService {
     return this._execute(args);
   }
 
+  _changeKubectlPath(path) {
+    this.kubectlPath = path;
+  }
+
   _getUsableResourceName(resources) {
     return Array.from(
       new Set(resources.map((resource) => resource.split('.')[0]))
@@ -140,7 +149,7 @@ class KubectlService {
 
   async _execute(args) {
     try {
-      const { stdout } = await execa('kubectl', args);
+      const { stdout } = await execa(this.kubectlPath, args);
       return stdout;
     } catch (error) {
       console.log(`KubectlService Failed: ${error.shortMessage}`);

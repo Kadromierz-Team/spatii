@@ -5,7 +5,7 @@ import { Modal as AntModal, Skeleton, Space, Tabs } from 'antd';
 
 const { TabPane } = Tabs;
 
-const ModalJsonView = ({
+const DescriptionModal = ({
   visible,
   showEmptyState,
   compactObject,
@@ -47,8 +47,8 @@ const ModalJsonView = ({
   );
 };
 
-ModalJsonView.propTypes = {
+DescriptionModal.propTypes = {
   isModalVisible: PropTypes.bool,
 };
 
-export default ModalJsonView;
+export default DescriptionModal;

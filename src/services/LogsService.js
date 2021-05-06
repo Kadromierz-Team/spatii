@@ -1,20 +1,22 @@
 import { spawn } from "child_process";
 import moment from "moment";
 import {bindClassFunctions} from '../utils/micsUtils';
+import StoreService from '../services/StoreService';
 import * as AT from '../constants/actionTypes';
 
 class LogsService{
   constructor(pods, dispatch) {
-  this.pods = pods;
-  this.dispatch = dispatch;
-  this.process = {};
-  this.state = `init`;
-  this.pausedAt = null;
+    const kubectlPath = StoreService.get('kubectlPath', null)
+    this.kubectlPath = kubectlPath || 'kubectl';
+    this.pods = pods;
+    this.dispatch = dispatch;
+    this.process = {};
+    this.state = `init`;
+    this.pausedAt = null;
 
+    bindClassFunctions(this);
 
-  bindClassFunctions(this);
-
-  this.start();
+    this.start();
   }
 
   start(from){
@@ -68,7 +70,7 @@ class LogsService{
   startListener(podName, namespace, from){
 
     const podSlug = this.getPodSlug(podName, namespace);
-    const command = spawn('kubectl',['-n',namespace,'logs',`pod/${podName}`,'-f',`--since-time=${from}`]);
+    const command = spawn(this.kubectlPath,['-n',namespace,'logs',`pod/${podName}`,'-f',`--since-time=${from}`]);
 
     command.stdout.on('data', (data) => {
       this.onNewLog(podSlug, data.toString());

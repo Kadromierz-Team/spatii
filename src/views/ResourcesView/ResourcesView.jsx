@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { PageHeader, Checkbox, Tag, Row, Input, Col, Space } from 'antd';
-import { Filters, ModalJsonView, Refresh } from '../../components/organisms';
+import { SettingOutlined } from '@ant-design/icons';
+import { Filters, DescriptionModal, SettingsModal, Refresh } from '../../components/organisms';
 import { Table, Button } from '../../components/molecules';
 import { getColumns } from './utils';
 
@@ -15,6 +16,8 @@ const ResourcesView = ({
   getResourceDescription,
   clearResourceDescription,
   changeSelectedResources,
+  applyKubectlPathFromStore,
+  setStore,
   changeSearchText,
   selectedResources,
   refreshing,
@@ -49,25 +52,35 @@ const ResourcesView = ({
           resource.currentCPUUtilizationPercentage,
       };
     });
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isDescriptionModalVisible, setIsDescriptionModalVisible] = useState(false);
+  const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);  
   const [resourceName, setResourceName] = useState(null);
-  const showModal = (value) => {
+
+  const showDescriptionModal = (value) => {
     setResourceName(value);
     getResourceDescription(value);
-    setIsModalVisible(true);
+    setIsDescriptionModalVisible(true);
   };
 
-  const handleOk = () => {
-    setIsModalVisible(false);
+  const showSettingsModal = () => {
+    setIsSettingsModalVisible(true);
+  };
+
+  const handleCloseDescriptionModal = () => {
+    setIsDescriptionModalVisible(false);
     clearResourceDescription();
     setResourceName(null);
   };
 
-  const handleCancel = () => {
-    setIsModalVisible(false);
-    clearResourceDescription();
-    setResourceName(null);
-  };
+  const handleSaveSettingsModal = (items) => {
+    setStore(items);
+    applyKubectlPathFromStore();
+    setIsSettingsModalVisible(false);
+  }
+
+  const handleCloseSettingsModal = () => {
+    setIsSettingsModalVisible(false);
+  }
 
   const onSearch = (event) => changeSearchText(event.target.value);
 
@@ -104,6 +117,9 @@ const ResourcesView = ({
     <div className="resource-view-wrapper">
       <PageHeader title={'Spatii'} />
       <Row className="filters">
+        <Col flex="40px">
+          <Button icon={<SettingOutlined />} onClick={showSettingsModal} />
+        </Col>
         <Col flex="auto" />
         <Col flex="500px">
           <Space direction="horizontal">
@@ -131,7 +147,7 @@ const ResourcesView = ({
       <Table
         columns={getColumns(
           filters.selectedResourceTypes,
-          showModal,
+          showDescriptionModal,
           allStatuses,
           filters.selectedNamespaces,
           filters.selectedResourceTypes,
@@ -141,14 +157,18 @@ const ResourcesView = ({
         rowSelection={rowSelection}
         loading={showLoader}
       />
-      <ModalJsonView
-        visible={isModalVisible}
-        handleOk={handleOk}
-        handleCancel={handleCancel}
+      <DescriptionModal
+        visible={isDescriptionModalVisible}
+        handleOk={handleCloseDescriptionModal}
+        handleCancel={handleCloseDescriptionModal}
         title={resourceName}
         jsonObject={filters.resourceDescription}
         compactObject={filters.compactDescription}
       />
+      <SettingsModal 
+        visible={isSettingsModalVisible}
+        handleCancel={handleCloseSettingsModal}
+        handleOk={handleSaveSettingsModal} />
     </div>
   );
 };

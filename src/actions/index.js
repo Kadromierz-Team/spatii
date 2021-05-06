@@ -1,6 +1,7 @@
 import { exec } from 'child_process';
 import * as AT from '../constants/actionTypes';
 import KubectlService from '../services/KubectlService';
+import StoreService from '../services/StoreService';
 import { formatCompactDescription } from '../utils/format';
 
 const kubectlService = new KubectlService();
@@ -83,7 +84,6 @@ export const getResources = (showLoader = true) => async (
   dispatch,
   getState
 ) => {
-  const service = new KubectlService();
   const { selectedResourceTypes, selectedNamespaces } = getState().filters;
 
   if (selectedResourceTypes.length === 0 || selectedNamespaces.length === 0) {
@@ -96,7 +96,7 @@ export const getResources = (showLoader = true) => async (
     });
   }
 
-  const resources = await service.getNamespaceResources(
+  const resources = await kubectlService.getNamespaceResources(
     selectedNamespaces,
     selectedResourceTypes
   );
@@ -152,6 +152,19 @@ export const changeResourceTypes = (resourceTypes) => async (
   dispatch(getResources());
 };
 
+export const setStore = (items) => {
+  const keys = Object.keys(items);
+  keys.forEach(key => {
+    const value = items[key];
+    StoreService.set(key, value);
+  });
+};
+
+export const applyKubectlPathFromStore = () => {
+  const savedPath = StoreService.get('kubectlPath', null);
+  if (savedPath) kubectlService._changeKubectlPath(savedPath);
+}
+
 export const changeSelectedResources = (resources) => ({
   type: AT.CHANGE_SELECTED_RESOURCE,
   payload: resources,
@@ -171,7 +184,6 @@ export const deletePod = (name, namespace) => async (dispatch, getState) => {
   dispatch({
     type: AT.SHOW_LOADER,
   });
-  const service = new KubectlService();
-  await service.deletePod(name, namespace);
+  await kubectlService.deletePod(name, namespace);
   await dispatch(getResources());
 };

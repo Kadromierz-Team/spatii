@@ -8,6 +8,8 @@ import {
   getResourceDescription,
   clearResourceDescription,
   changeSelectedResources,
+  applyKubectlPathFromStore,
+  setStore,
   toggleRefresh,
   changeRefreshInterval,
   getResources,
