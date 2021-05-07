@@ -4,7 +4,7 @@ import moment from 'moment';
 class KubectlService {
   constructor() {
     this.kubectlPath = 'kubectl';
-    this._execute = this._changeKubectlPath.bind(this);
+    this._execute = this._execute.bind(this);
   }
 
   async getContexts() {

@@ -2,7 +2,12 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { PageHeader, Checkbox, Tag, Row, Input, Col, Space } from 'antd';
 import { SettingOutlined } from '@ant-design/icons';
-import { Filters, DescriptionModal, SettingsModal, Refresh } from '../../components/organisms';
+import {
+  Filters,
+  DescriptionModal,
+  SettingsModal,
+  Refresh,
+} from '../../components/organisms';
 import { Table, Button } from '../../components/molecules';
 import { getColumns } from './utils';
 
@@ -52,8 +57,10 @@ const ResourcesView = ({
           resource.currentCPUUtilizationPercentage,
       };
     });
-  const [isDescriptionModalVisible, setIsDescriptionModalVisible] = useState(false);
-  const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);  
+  const [isDescriptionModalVisible, setIsDescriptionModalVisible] = useState(
+    false
+  );
+  const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
   const [resourceName, setResourceName] = useState(null);
 
   const showDescriptionModal = (value) => {
@@ -76,11 +83,11 @@ const ResourcesView = ({
     setStore(items);
     applyKubectlPathFromStore();
     setIsSettingsModalVisible(false);
-  }
+  };
 
   const handleCloseSettingsModal = () => {
     setIsSettingsModalVisible(false);
-  }
+  };
 
   const onSearch = (event) => changeSearchText(event.target.value);
 
@@ -165,10 +172,11 @@ const ResourcesView = ({
         jsonObject={filters.resourceDescription}
         compactObject={filters.compactDescription}
       />
-      <SettingsModal 
+      <SettingsModal
         visible={isSettingsModalVisible}
         handleCancel={handleCloseSettingsModal}
-        handleOk={handleSaveSettingsModal} />
+        handleOk={handleSaveSettingsModal}
+      />
     </div>
   );
 };

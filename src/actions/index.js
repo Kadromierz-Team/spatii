@@ -154,7 +154,7 @@ export const changeResourceTypes = (resourceTypes) => async (
 
 export const setStore = (items) => {
   const keys = Object.keys(items);
-  keys.forEach(key => {
+  keys.forEach((key) => {
     const value = items[key];
     StoreService.set(key, value);
   });
@@ -163,7 +163,7 @@ export const setStore = (items) => {
 export const applyKubectlPathFromStore = () => {
   const savedPath = StoreService.get('kubectlPath', null);
   if (savedPath) kubectlService._changeKubectlPath(savedPath);
-}
+};
 
 export const changeSelectedResources = (resources) => ({
   type: AT.CHANGE_SELECTED_RESOURCE,
